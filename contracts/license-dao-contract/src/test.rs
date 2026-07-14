@@ -1,21 +1,42 @@
 #![cfg(test)]
 
 use super::*;
-use soroban_sdk::{testutils::Address as _, Address, BytesN, Env};
+use soroban_sdk::{testutils::Address as _, Address, BytesN, Env, contract, contractimpl};
 
-#[test]
-fn test_create_license_and_grant_access() {
+#[contract]
+pub struct MockRegistryContract;
+
+#[contractimpl]
+impl MockRegistryContract {
+    pub fn is_registered(_env: Env, work_id: u32) -> bool {
+        work_id == 1
+    }
+}
+
+fn setup_env_and_client() -> (Env, DataAccessContractClient<'static>, Address) {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register(LicenseDaoContract, ());
-    let client = LicenseDaoContractClient::new(&env, &contract_id);
+    let contract_id = env.register(DataAccessContract, ());
+    let client = DataAccessContractClient::new(&env, &contract_id);
+
+    let registry_id = env.register(MockRegistryContract, ());
+    let token = Address::generate(&env);
+    
+    client.init_contract(&token, &registry_id);
+    
+    (env, client, registry_id)
+}
+
+#[test]
+fn test_create_license_and_grant_access() {
+    let (env, client, _) = setup_env_and_client();
 
     let owner = Address::generate(&env);
     let user = Address::generate(&env);
     let terms_hash = BytesN::from_array(&env, &[1u8; 32]);
 
-    // Create a Creative Commons license (type 0)
+    // Create a Creative Commons license (type 0) for work_id 1
     let license_id = client.create_license(&owner, &1, &0, &terms_hash);
     assert_eq!(license_id, 1);
 
@@ -31,12 +52,20 @@ fn test_create_license_and_grant_access() {
 }
 
 #[test]
-fn test_revoke_access() {
-    let env = Env::default();
-    env.mock_all_auths();
+#[should_panic(expected = "Cannot license an unregistered medical record.")]
+fn test_create_license_unregistered_ip() {
+    let (env, client, _) = setup_env_and_client();
 
-    let contract_id = env.register(LicenseDaoContract, ());
-    let client = LicenseDaoContractClient::new(&env, &contract_id);
+    let owner = Address::generate(&env);
+    let terms_hash = BytesN::from_array(&env, &[1u8; 32]);
+
+    // Attempt to license an unregistered work (work_id = 999)
+    client.create_license(&owner, &999, &0, &terms_hash);
+}
+
+#[test]
+fn test_revoke_access() {
+    let (env, client, _) = setup_env_and_client();
 
     let owner = Address::generate(&env);
     let user = Address::generate(&env);
@@ -54,13 +83,8 @@ fn test_revoke_access() {
 
 #[test]
 fn test_file_dispute_and_vote() {
-    let env = Env::default();
-    env.mock_all_auths();
+    let (env, client, _) = setup_env_and_client();
 
-    let contract_id = env.register(LicenseDaoContract, ());
-    let client = LicenseDaoContractClient::new(&env, &contract_id);
-
-    // Initialize DAO without a token (voting won't cost tokens)
     let plaintiff = Address::generate(&env);
     let defendant = Address::generate(&env);
     let evidence = BytesN::from_array(&env, &[5u8; 32]);
@@ -68,7 +92,7 @@ fn test_file_dispute_and_vote() {
     let dispute_id = client.file_dispute(&plaintiff, &defendant, &1, &evidence);
     assert_eq!(dispute_id, 1);
 
-    // Vote in favor of the plaintiff with 3 votes (cost = 9 tokens)
+    // Vote in favor of the plaintiff with 3 votes
     let voter = Address::generate(&env);
     client.vote_dispute(&voter, &dispute_id, &3, &true);
 
@@ -81,11 +105,7 @@ fn test_file_dispute_and_vote() {
 #[test]
 #[should_panic(expected = "Voter has already voted on this dispute")]
 fn test_double_vote_rejected() {
-    let env = Env::default();
-    env.mock_all_auths();
-
-    let contract_id = env.register(LicenseDaoContract, ());
-    let client = LicenseDaoContractClient::new(&env, &contract_id);
+    let (env, client, _) = setup_env_and_client();
 
     let plaintiff = Address::generate(&env);
     let defendant = Address::generate(&env);
@@ -102,11 +122,7 @@ fn test_double_vote_rejected() {
 #[test]
 #[should_panic(expected = "Only the license owner can grant access")]
 fn test_non_owner_cannot_grant() {
-    let env = Env::default();
-    env.mock_all_auths();
-
-    let contract_id = env.register(LicenseDaoContract, ());
-    let client = LicenseDaoContractClient::new(&env, &contract_id);
+    let (env, client, _) = setup_env_and_client();
 
     let owner = Address::generate(&env);
     let imposter = Address::generate(&env);
@@ -122,11 +138,7 @@ fn test_non_owner_cannot_grant() {
 #[test]
 #[should_panic(expected = "Votes must be greater than 0")]
 fn test_negative_votes_rejected() {
-    let env = Env::default();
-    env.mock_all_auths();
-
-    let contract_id = env.register(LicenseDaoContract, ());
-    let client = LicenseDaoContractClient::new(&env, &contract_id);
+    let (env, client, _) = setup_env_and_client();
 
     let plaintiff = Address::generate(&env);
     let defendant = Address::generate(&env);
