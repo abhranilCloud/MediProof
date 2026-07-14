@@ -1,8 +1,14 @@
-# MediProof ⚕️
+# MediProof - Clinical Data Provenance on Soroban
 
-**Enterprise-Grade Decentralized Medical Records Registry on Stellar Soroban**
+MediProof is a decentralized clinical data provenance and institutional access management application built on the Stellar Soroban network. It facilitates zero-knowledge-like verification of medical records, handles institutional data agreements, and offers a DAO structure for peer review.
 
-MediProof is a zero-knowledge clinical data infrastructure layer built on the Stellar Soroban network. It empowers healthcare institutions, researchers, and patients to anchor cryptographic proofs of electronic health records (EHR), clinical trials, and medical evidence on-chain without exposing any Protected Health Information (PHI).
+## Architecture
+
+MediProof relies on two primary smart contracts:
+1. **Registry Contract:** Handles IP hashing, registration, and evidence verification.
+2. **License DAO Contract:** Manages commercial and research data access agreements, integrating with the Registry contract via cross-contract calls to verify IP.
+
+This repository features a complete frontend written in React, Vite, and Tailwind CSS, bundled with comprehensive Vitest unit tests, and GitHub Actions CI pipelines for robust production deployment.
 
 ![MediProof Landing](docs/assets/landing.png) <!-- Update with actual screenshot path -->
 
