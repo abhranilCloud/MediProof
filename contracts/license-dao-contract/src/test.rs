@@ -13,6 +13,16 @@ impl MockRegistryContract {
     }
 }
 
+#[contract]
+pub struct MockTokenContract;
+
+#[contractimpl]
+impl MockTokenContract {
+    pub fn transfer(_env: Env, _from: Address, _to: Address, _amount: i128) {
+        // do nothing
+    }
+}
+
 fn setup_env_and_client() -> (Env, DataAccessContractClient<'static>, Address) {
     let env = Env::default();
     env.mock_all_auths();
@@ -21,9 +31,9 @@ fn setup_env_and_client() -> (Env, DataAccessContractClient<'static>, Address) {
     let client = DataAccessContractClient::new(&env, &contract_id);
 
     let registry_id = env.register(MockRegistryContract, ());
-    let token = Address::generate(&env);
+    let token_id = env.register(MockTokenContract, ());
     
-    client.init_contract(&token, &registry_id);
+    client.init_contract(&token_id, &registry_id);
     
     (env, client, registry_id)
 }
