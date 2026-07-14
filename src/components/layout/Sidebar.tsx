@@ -38,11 +38,20 @@ const NAV_GROUPS = [
   },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () => void }) {
   const { pathname } = useLocation();
 
   return (
-    <aside className="fixed left-0 top-0 bottom-0 z-40 hidden w-[260px] flex-col border-r border-[rgb(var(--hairline))] bg-[rgb(var(--surface))] md:flex">
+    <>
+      {/* Mobile Backdrop */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 z-30 bg-black/50 md:hidden" 
+          onClick={onClose} 
+        />
+      )}
+      
+      <aside className={`fixed left-0 top-0 bottom-0 z-40 w-[260px] flex-col border-r border-[rgb(var(--hairline))] bg-[rgb(var(--surface))] transition-transform duration-300 md:flex md:translate-x-0 ${isOpen ? 'translate-x-0 flex' : '-translate-x-full hidden'}`}>
       {/* Brand */}
       <div className="flex h-16 shrink-0 items-center px-6 border-b border-[rgb(var(--hairline))]">
         <Link to="/" className="flex items-center gap-2.5 group">
@@ -95,5 +104,6 @@ export default function Sidebar() {
         </div>
       </div>
     </aside>
+    </>
   );
 }

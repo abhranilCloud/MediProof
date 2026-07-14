@@ -13,14 +13,17 @@ const ROUTE_TITLES: Record<string, string> = {
   '/transfer': 'Treasury Management',
 };
 
-export default function TopHeader() {
+export default function TopHeader({ onOpenMenu }: { onOpenMenu: () => void }) {
   const { pathname } = useLocation();
   const title = ROUTE_TITLES[pathname] || 'Dashboard';
 
   return (
     <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center gap-4 border-b border-[rgb(var(--hairline))] bg-[rgb(var(--surface))] px-6">
       {/* Mobile Menu Button - visible only on small screens */}
-      <button className="md:hidden text-[rgb(var(--ink-muted))] hover:text-[rgb(var(--ink))]">
+      <button 
+        onClick={onOpenMenu}
+        className="md:hidden text-[rgb(var(--ink-muted))] hover:text-[rgb(var(--ink))]"
+      >
         <HiOutlineMenu className="h-6 w-6" />
       </button>
 
