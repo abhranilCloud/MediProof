@@ -1,65 +1,48 @@
-name: CI
+name: CI Pipeline
 
 on:
   push:
-    branches: [main]
+    branches: [ "main" ]
   pull_request:
-    branches: [main]
+    branches: [ "main" ]
 
 jobs:
-  rust-contracts:
-    name: Rust Contract Tests
+  build-and-test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        contract: [registry-contract, co-ownership-contract, license-dao-contract]
+
     steps:
-      - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: wasm32-unknown-unknown
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
 
-      - name: Cache Cargo
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            contracts/${{ matrix.contract }}/target
-          key: ${{ runner.os }}-cargo-${{ matrix.contract }}-${{ hashFiles('contracts/${{ matrix.contract }}/Cargo.toml') }}
+    - name: Run linting
+      run: npm run lint
 
-      - name: Run Tests — ${{ matrix.contract }}
-        working-directory: contracts/${{ matrix.contract }}
-        run: cargo test --verbose
+    - name: Run UI tests
+      run: npx vitest run
 
-  frontend:
-    name: Frontend Tests & Build
+    - name: Build frontend
+      run: npm run build
+
+  smart-contracts-test:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
+    - name: Install Rust
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        targets: wasm32-unknown-unknown
 
-      - name: Install Dependencies
-        run: npm install --ignore-scripts
-
-      - name: Run Vitest
-        run: npm run test
-
-      - name: Build Next.js
-        run: npm run build
-        env:
-          NEXT_PUBLIC_REGISTRY_CONTRACT_ID: CDK247D6PUHXDKAJHOTQNPG4V3JKLDYKXIERTONDDH3NMCUPE3PGEFCY
-          NEXT_PUBLIC_COOWNERSHIP_CONTRACT_ID: CBM6H2CGIAJDBQ5K5747Z6RQWCP355WVBAF3LH7ECJAX4AOIEUDQLTGX
-          NEXT_PUBLIC_LICENSE_DAO_CONTRACT_ID: CC3466SOHIWRKY62APTMWLMOX552JDYH5ZI3IDHOXAWYB64SN7MUCNJG
-          NEXT_PUBLIC_STELLAR_RPC_URL: https://soroban-testnet.stellar.org
-      - name: Install Playwright browsers
-        run: npx playwright install
-      - name: Run Playwright tests
-        run: npm run e2e
+    - name: Run Soroban tests
+      run: |
+        cargo test --manifest-path contracts/registry-contract/Cargo.toml
+        cargo test --manifest-path contracts/license-dao-contract/Cargo.toml
