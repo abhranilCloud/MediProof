@@ -10,10 +10,11 @@ import Disputes from './pages/Disputes';
 import Portfolio from './pages/Portfolio';
 import Transfer from './pages/Transfer';
 import DashboardLayout from './components/layout/DashboardLayout';
+import { ErrorBoundary } from './components/ui/ErrorBoundary';
 
 export default function App() {
   return (
-    <>
+    <ErrorBoundary>
       <Toaster
         position="bottom-right"
         toastOptions={{
@@ -50,6 +51,6 @@ export default function App() {
           }
         />
       </Routes>
-    </>
+    </ErrorBoundary>
   );
 }
