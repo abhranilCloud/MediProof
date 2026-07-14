@@ -62,6 +62,7 @@ pub enum DataKey {
     LicenseCount,
     License(u32),
     AccessKey(u32, Address), // (agreement_id, user) -> bool
+    RegistryAddress,         // -> Address
     // Evidence dispute DAO
     Token,
     DisputeCount,
@@ -76,6 +77,16 @@ pub struct DataAccessContract;
 impl DataAccessContract {
     /* ─── Data Access Agreements ─── */
 
+    /// Initialize the contract with a governance token for quadratic voting and a registry for cross-contract calls.
+    pub fn init_contract(env: Env, token: Address, registry: Address) {
+        if env.storage().instance().has(&DataKey::Token) {
+            panic!("Contract already initialized");
+        }
+        env.storage().instance().set(&DataKey::Token, &token);
+        env.storage().instance().set(&DataKey::RegistryAddress, &registry);
+        env.storage().instance().set(&DataKey::DisputeCount, &0u32);
+    }
+
     /// Create a new data access agreement for a medical record.
     pub fn create_license(
         env: Env,
@@ -85,6 +96,19 @@ impl DataAccessContract {
         terms_hash: BytesN<32>,
     ) -> u32 {
         owner.require_auth();
+
+        // 1. Cross-Contract Call: Verify the IP exists in the registry
+        let registry_addr: Address = env.storage().instance().get(&DataKey::RegistryAddress).expect("Registry not configured");
+        use soroban_sdk::vec;
+        let is_registered: bool = env.invoke_contract(
+            &registry_addr,
+            &soroban_sdk::Symbol::new(&env, "is_registered"),
+            vec![&env, work_id.into_val(&env)]
+        );
+
+        if !is_registered {
+            panic!("Cannot license an unregistered medical record.");
+        }
 
         if license_type > 3 {
             panic!("Invalid license type. Use 0=CC, 1=MIT, 2=Proprietary, 3=Custom");
@@ -174,15 +198,6 @@ impl DataAccessContract {
     }
 
     /* ─── Dispute DAO ─── */
-
-    /// Initialize the DAO with a governance token for quadratic voting costs.
-    pub fn init_dao(env: Env, token: Address) {
-        if env.storage().instance().has(&DataKey::Token) {
-            panic!("DAO already initialized");
-        }
-        env.storage().instance().set(&DataKey::Token, &token);
-        env.storage().instance().set(&DataKey::DisputeCount, &0u32);
-    }
 
     /// File a new plagiarism dispute.
     pub fn file_dispute(
