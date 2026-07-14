@@ -28,22 +28,25 @@ export function useWallet() {
     }
   }, [refreshBalance]);
 
-  const connect = useCallback(async (id?: string) => {
-    try {
-      setLoading(true);
-      setError(null);
-      if (id) setWalletId(id);
-      const key = await stellar.connectWallet(id);
-      setPublicKey(key);
-      sessionStorage.setItem('cs_wallet', key);
-      await refreshBalance(key);
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Connection failed';
-      setError(message);
-    } finally {
-      setLoading(false);
-    }
-  }, [refreshBalance]);
+  const connect = useCallback(
+    async (id?: string) => {
+      try {
+        setLoading(true);
+        setError(null);
+        if (id) setWalletId(id);
+        const key = await stellar.connectWallet(id);
+        setPublicKey(key);
+        sessionStorage.setItem('cs_wallet', key);
+        await refreshBalance(key);
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : 'Connection failed';
+        setError(message);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [refreshBalance],
+  );
 
   const disconnect = useCallback(() => {
     stellar.disconnect();

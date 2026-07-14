@@ -57,9 +57,9 @@ const FEATURES = [
 
 const STATS = [
   { label: 'Cost per Record', value: '<$0.001' },
-  { label: 'Finality Time',   value: '~5 sec' },
-  { label: 'Network',         value: 'Stellar' },
-  { label: 'Privacy',         value: 'Hash-only' },
+  { label: 'Finality Time', value: '~5 sec' },
+  { label: 'Network', value: 'Stellar' },
+  { label: 'Privacy', value: 'Hash-only' },
 ];
 
 const HOW_IT_WORKS = [
@@ -90,7 +90,6 @@ export default function Landing() {
     <div className="bg-[rgb(var(--canvas))] text-[rgb(var(--ink))] min-h-screen font-sans">
       <LandingNavbar />
       <main className="relative">
-
         {/* ── Hero ── */}
         <section className="relative overflow-hidden border-b border-[rgb(var(--hairline))]">
           <div className="relative mx-auto max-w-6xl px-6 pb-28 pt-24 text-center">
@@ -99,14 +98,15 @@ export default function Landing() {
             </p>
 
             <h1 className="text-[3rem] font-extrabold leading-[1.05] tracking-tight sm:text-6xl md:text-[5rem] text-[rgb(var(--ink))]">
-              Immutable Clinical Data.<br />
+              Immutable Clinical Data.
+              <br />
               <span className="text-[rgb(var(--ink-muted))]">Cryptographically Secured.</span>
             </h1>
 
             <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-[rgb(var(--ink-muted))]">
-              MediProof is a decentralized infrastructure layer for Electronic Health Records (EHR), clinical trials, and
-              healthcare evidence. Anchor cryptographic provenance on Stellar Soroban — without
-              exposing a single byte of Protected Health Information (PHI).
+              MediProof is a decentralized infrastructure layer for Electronic Health Records (EHR),
+              clinical trials, and healthcare evidence. Anchor cryptographic provenance on Stellar
+              Soroban — without exposing a single byte of Protected Health Information (PHI).
             </p>
 
             <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
@@ -122,7 +122,9 @@ export default function Landing() {
           <div className="grid grid-cols-2 divide-x divide-[rgb(var(--hairline))] md:grid-cols-4">
             {STATS.map(({ label, value }) => (
               <div key={label} className="px-6 py-4 text-center">
-                <p className="mb-1 text-xs font-medium uppercase tracking-wider text-[rgb(var(--ink-muted))]">{label}</p>
+                <p className="mb-1 text-xs font-medium uppercase tracking-wider text-[rgb(var(--ink-muted))]">
+                  {label}
+                </p>
                 <p className="text-2xl font-semibold tracking-tight text-[rgb(var(--ink))]">
                   {value}
                 </p>
@@ -152,7 +154,9 @@ export default function Landing() {
                 <div className="mb-6 inline-flex h-10 w-10 items-center justify-center rounded-sm bg-[rgb(var(--elevated))] text-[rgb(var(--ink))]">
                   <f.icon className="h-5 w-5" />
                 </div>
-                <h3 className="mb-2 font-semibold tracking-tight text-lg text-[rgb(var(--ink))]">{f.title}</h3>
+                <h3 className="mb-2 font-semibold tracking-tight text-lg text-[rgb(var(--ink))]">
+                  {f.title}
+                </h3>
                 <p className="mb-8 flex-1 text-sm leading-relaxed text-[rgb(var(--ink-muted))]">
                   {f.desc}
                 </p>
@@ -177,8 +181,8 @@ export default function Landing() {
                 HIPAA-Compliant by Design.
               </h2>
               <p className="mt-4 text-lg text-[rgb(var(--ink-muted))]">
-                Patient records and clinical datasets never leave your local environment. Only irreversible
-                cryptographic hashes are transmitted to the decentralized ledger.
+                Patient records and clinical datasets never leave your local environment. Only
+                irreversible cryptographic hashes are transmitted to the decentralized ledger.
               </p>
             </div>
 
@@ -188,7 +192,9 @@ export default function Landing() {
                   <div className="mb-4 text-xs font-mono text-[rgb(var(--ink-muted))]">
                     {item.step} —
                   </div>
-                  <h4 className="font-semibold tracking-tight text-[rgb(var(--ink))]">{item.title}</h4>
+                  <h4 className="font-semibold tracking-tight text-[rgb(var(--ink))]">
+                    {item.title}
+                  </h4>
                   <p className="mt-2 text-sm leading-relaxed text-[rgb(var(--ink-muted))]">
                     {item.desc}
                   </p>

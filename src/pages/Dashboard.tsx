@@ -45,7 +45,6 @@ export default function Home() {
 
   return (
     <div className="relative min-h-[80vh]">
-      
       <div className="relative z-10 space-y-8 animate-[reveal-up_0.5s_ease-out_both]">
         {/* Header Section */}
         <div>
@@ -53,26 +52,37 @@ export default function Home() {
             Clinical Operations
           </h2>
           <p className="mt-2 text-[rgb(var(--ink-muted))]">
-            Manage your medical records, research data, and institutional sharing agreements on the Stellar network.
+            Manage your medical records, research data, and institutional sharing agreements on the
+            Stellar network.
           </p>
         </div>
 
         {/* Network & Wallet Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="rounded-none border border-[rgb(var(--hairline))] bg-[rgb(var(--surface))] p-6">
-            <p className="text-xs font-medium uppercase tracking-wider text-[rgb(var(--ink-muted))]">Network</p>
+            <p className="text-xs font-medium uppercase tracking-wider text-[rgb(var(--ink-muted))]">
+              Network
+            </p>
             <p className="mt-2 text-2xl font-bold text-[rgb(var(--ink))]">Soroban Testnet</p>
-            <p className="mt-1 text-xs text-[rgb(var(--ink-muted))]">Current Ledger: Synchronized</p>
+            <p className="mt-1 text-xs text-[rgb(var(--ink-muted))]">
+              Current Ledger: Synchronized
+            </p>
           </div>
           <div className="rounded-none border border-[rgb(var(--hairline))] bg-[rgb(var(--surface))] p-6">
-            <p className="text-xs font-medium uppercase tracking-wider text-[rgb(var(--ink-muted))]">Wallet Status</p>
+            <p className="text-xs font-medium uppercase tracking-wider text-[rgb(var(--ink-muted))]">
+              Wallet Status
+            </p>
             <p className="mt-2 text-2xl font-bold text-[rgb(var(--ink))]">
               {isConnected ? 'Connected' : 'Not Connected'}
             </p>
-            <p className="mt-1 text-xs text-[rgb(var(--brand))]">{isConnected ? `Balance: ${balance} XLM` : 'Connect wallet to transact'}</p>
+            <p className="mt-1 text-xs text-[rgb(var(--brand))]">
+              {isConnected ? `Balance: ${balance} XLM` : 'Connect wallet to transact'}
+            </p>
           </div>
           <div className="rounded-none border border-[rgb(var(--hairline))] bg-[rgb(var(--surface))] p-6">
-            <p className="text-xs font-medium uppercase tracking-wider text-[rgb(var(--ink-muted))]">Active Records</p>
+            <p className="text-xs font-medium uppercase tracking-wider text-[rgb(var(--ink-muted))]">
+              Active Records
+            </p>
             <p className="mt-2 text-2xl font-bold text-[rgb(var(--ink))]">—</p>
             <p className="mt-1 text-xs text-[rgb(var(--ink-muted))]">Querying indexer...</p>
           </div>
@@ -88,7 +98,9 @@ export default function Home() {
                 to={action.href}
                 className="group relative flex flex-col rounded-none border border-[rgb(var(--hairline))] bg-[rgb(var(--surface))] p-6 transition-colors hover:border-[rgb(var(--ink-muted))]"
               >
-                <div className={`mb-4 inline-flex h-10 w-10 items-center justify-center rounded-sm ${action.color === 'brand' ? 'brand-fill text-canvas' : 'bg-[rgb(var(--elevated))] text-[rgb(var(--ink))]"'}`}>
+                <div
+                  className={`mb-4 inline-flex h-10 w-10 items-center justify-center rounded-sm ${action.color === 'brand' ? 'brand-fill text-canvas' : 'bg-[rgb(var(--elevated))] text-[rgb(var(--ink))]"'}`}
+                >
                   <action.icon className="h-5 w-5" />
                 </div>
                 <h4 className="font-semibold text-[rgb(var(--ink))]">{action.title}</h4>

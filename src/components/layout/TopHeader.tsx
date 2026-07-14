@@ -20,7 +20,7 @@ export default function TopHeader({ onOpenMenu }: { onOpenMenu: () => void }) {
   return (
     <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center gap-4 border-b border-[rgb(var(--hairline))] bg-[rgb(var(--surface))] px-6">
       {/* Mobile Menu Button - visible only on small screens */}
-      <button 
+      <button
         onClick={onOpenMenu}
         className="md:hidden text-[rgb(var(--ink-muted))] hover:text-[rgb(var(--ink))]"
       >
@@ -28,9 +28,7 @@ export default function TopHeader({ onOpenMenu }: { onOpenMenu: () => void }) {
       </button>
 
       {/* Page Title */}
-      <h1 className="text-lg font-semibold tracking-tight text-[rgb(var(--ink))]">
-        {title}
-      </h1>
+      <h1 className="text-lg font-semibold tracking-tight text-[rgb(var(--ink))]">{title}</h1>
 
       <div className="ml-auto flex items-center gap-4">
         <WalletButton />

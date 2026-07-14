@@ -5,12 +5,7 @@ import {
   WalletNetwork,
   allowAllModules,
 } from '@creit.tech/stellar-wallets-kit';
-import {
-  STELLAR_RPC_URL,
-  HORIZON_URL,
-  NETWORK_PASSPHRASE,
-  EXPLORER_BASE_URL,
-} from './constants';
+import { STELLAR_RPC_URL, HORIZON_URL, NETWORK_PASSPHRASE, EXPLORER_BASE_URL } from './constants';
 
 export class StellarHelper {
   private server: StellarSdk.Horizon.Server;
@@ -55,7 +50,10 @@ export class StellarHelper {
       if (message.toLowerCase().includes('rejected') || message.toLowerCase().includes('denied')) {
         throw new Error('Wallet connection was declined by the user.');
       }
-      if (message.toLowerCase().includes('not found') || message.toLowerCase().includes('install')) {
+      if (
+        message.toLowerCase().includes('not found') ||
+        message.toLowerCase().includes('install')
+      ) {
         throw new Error('Please install Freighter or another Stellar wallet extension.');
       }
       throw new Error(`Wallet connection failed: ${message}`);
@@ -84,7 +82,11 @@ export class StellarHelper {
 
   /* ─── Direct Payments ─── */
 
-  async sendXlmTransaction(sender: string, recipient: string, amount: string): Promise<{ hash: string }> {
+  async sendXlmTransaction(
+    sender: string,
+    recipient: string,
+    amount: string,
+  ): Promise<{ hash: string }> {
     try {
       const sourceAccount = await this.server.loadAccount(sender);
       const tx = new StellarSdk.TransactionBuilder(sourceAccount, {
@@ -96,7 +98,7 @@ export class StellarHelper {
             destination: recipient,
             asset: StellarSdk.Asset.native(),
             amount: amount,
-          })
+          }),
         )
         .setTimeout(30)
         .build();
@@ -110,7 +112,10 @@ export class StellarHelper {
       return { hash: submitResult.hash };
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Unknown error';
-      if (message.toLowerCase().includes('rejected') || message.toLowerCase().includes('declined')) {
+      if (
+        message.toLowerCase().includes('rejected') ||
+        message.toLowerCase().includes('declined')
+      ) {
         throw new Error('Transaction rejected by the user.');
       }
       if (message.includes('underfunded') || message.toLowerCase().includes('insufficient')) {
@@ -144,7 +149,10 @@ export class StellarHelper {
 
     if (StellarSdk.rpc.Api.isSimulationError(simulation)) {
       const errMsg = simulation.error || 'Simulation failed';
-      if (errMsg.toLowerCase().includes('balance') || errMsg.toLowerCase().includes('insufficient')) {
+      if (
+        errMsg.toLowerCase().includes('balance') ||
+        errMsg.toLowerCase().includes('insufficient')
+      ) {
         throw new Error('Insufficient XLM balance for transaction fees.');
       }
       throw new Error(`Contract simulation failed: ${errMsg}`);
@@ -195,7 +203,9 @@ export class StellarHelper {
 
   /* ─── Transaction Polling ─── */
 
-  async pollTransaction(hash: string): Promise<{ status: 'PENDING' | 'SUCCESS' | 'FAILED'; returnValue?: string }> {
+  async pollTransaction(
+    hash: string,
+  ): Promise<{ status: 'PENDING' | 'SUCCESS' | 'FAILED'; returnValue?: string }> {
     try {
       const response = await this.rpcServer.getTransaction(hash);
       console.log('getTransaction response status:', response.status);

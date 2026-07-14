@@ -7,7 +7,12 @@ import { stellar } from '@/lib/stellar';
 import { DATA_ACCESS_CONTRACT_ID } from '@/lib/constants';
 import * as StellarSdk from '@stellar/stellar-sdk';
 import toast from 'react-hot-toast';
-import { HiOutlineScale, HiOutlineArrowPath, HiOutlineHandRaised, HiArrowTopRightOnSquare } from 'react-icons/hi2';
+import {
+  HiOutlineScale,
+  HiOutlineArrowPath,
+  HiOutlineHandRaised,
+  HiArrowTopRightOnSquare,
+} from 'react-icons/hi2';
 
 type TxStatus = 'idle' | 'signing' | 'polling' | 'success' | 'failed';
 
@@ -192,30 +197,31 @@ export default function DisputesPage() {
 
   return (
     <>
-      
       <main className="mx-auto max-w-4xl px-4 py-12">
         <p className="eyebrow mb-3">Clinical Data Integrity</p>
         <h1 className="text-3xl font-extrabold tracking-tight mb-2 text-[rgb(var(--ink))]">
           <span className="text-[rgb(var(--ink))]">Clinical Peer Review</span> Cases
         </h1>
         <p className="text-sm mb-10 text-[rgb(var(--ink-muted))]">
-          Flag questionable clinical evidence, submit cryptographic proof, and resolve data integrity challenges through
-          institutional Quadratic Voting (cost = votes²).
+          Flag questionable clinical evidence, submit cryptographic proof, and resolve data
+          integrity challenges through institutional Quadratic Voting (cost = votes²).
         </p>
 
         {!isConnected ? (
           <div className="rounded-none border border-[rgb(var(--hairline))] bg-[rgb(var(--surface))] p-10 text-center">
             <div className="text-4xl mb-4">⚕</div>
             <p className="font-semibold mb-1 text-[rgb(var(--ink))]">Authentication Required</p>
-            <p className="text-sm text-[rgb(var(--ink-muted))]">Connect your institutional wallet to participate in peer review.</p>
+            <p className="text-sm text-[rgb(var(--ink-muted))]">
+              Connect your institutional wallet to participate in peer review.
+            </p>
           </div>
         ) : (
           <>
             {/* Tabs */}
             <div className="flex gap-2 mb-8">
               {[
-                { id: 'file',    label: 'Open Review Case' },
-                { id: 'vote',    label: 'Cast Review Vote' },
+                { id: 'file', label: 'Open Review Case' },
+                { id: 'vote', label: 'Cast Review Vote' },
                 { id: 'history', label: 'Case History' },
               ].map((tab) => (
                 <button
@@ -278,21 +284,34 @@ export default function DisputesPage() {
                   <button
                     id="dispute-file-btn"
                     onClick={handleFileDispute}
-                    disabled={!defendant || !disputeWorkId || txStatus === 'signing' || txStatus === 'polling'}
+                    disabled={
+                      !defendant ||
+                      !disputeWorkId ||
+                      txStatus === 'signing' ||
+                      txStatus === 'polling'
+                    }
                     className="btn-primary w-full justify-center text-sm py-3 "
                   >
                     {txStatus === 'signing' || txStatus === 'polling' ? (
-                      <><HiOutlineArrowPath className="h-4 w-4 animate-spin" />
+                      <>
+                        <HiOutlineArrowPath className="h-4 w-4 animate-spin" />
                         {txStatus === 'signing' ? 'Signing…' : 'Submitting Challenge…'}
                       </>
                     ) : (
-                      <><HiOutlineScale className="h-4 w-4" /> Open Peer Review Challenge</>
+                      <>
+                        <HiOutlineScale className="h-4 w-4" /> Open Peer Review Challenge
+                      </>
                     )}
                   </button>
 
                   {txStatus === 'success' && txHash && (
                     <div className="rounded-none border border-green-900/50 bg-[rgb(var(--surface))] p-4 mt-2">
-                      <h3 className="text-sm font-semibold mb-2" style={{ color: 'rgb(var(--success))' }}>✓ Peer Review Case Opened</h3>
+                      <h3
+                        className="text-sm font-semibold mb-2"
+                        style={{ color: 'rgb(var(--success))' }}
+                      >
+                        ✓ Peer Review Case Opened
+                      </h3>
                       <a
                         href={stellar.getExplorerLink(txHash)}
                         target="_blank"
@@ -340,11 +359,19 @@ export default function DisputesPage() {
                   {/* Quadratic Cost Calculator */}
                   <div
                     className="rounded-xl p-4"
-                    style={{ background: 'rgb(var(--elevated) / 0.6)', border: '1px solid rgb(var(--brand) / 0.15)' }}
+                    style={{
+                      background: 'rgb(var(--elevated) / 0.6)',
+                      border: '1px solid rgb(var(--brand) / 0.15)',
+                    }}
                   >
                     <div className="flex items-center justify-between mb-2">
                       <span className="eyebrow">Quadratic Cost Formula</span>
-                      <span className="font-mono text-xs" style={{ color: 'rgb(var(--ink-faint))' }}>cost = votes²</span>
+                      <span
+                        className="font-mono text-xs"
+                        style={{ color: 'rgb(var(--ink-faint))' }}
+                      >
+                        cost = votes²
+                      </span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-[rgb(var(--ink-muted))]">
@@ -362,7 +389,9 @@ export default function DisputesPage() {
                       onClick={() => setSupportPlaintiff(true)}
                       className="flex-1 rounded-xl p-4 text-center transition-all transition-colors hover:border-[rgb(var(--ink-muted))]"
                       style={{
-                        background: supportPlaintiff ? 'rgb(var(--success) / 0.15)' : 'rgb(var(--elevated) / 0.5)',
+                        background: supportPlaintiff
+                          ? 'rgb(var(--success) / 0.15)'
+                          : 'rgb(var(--elevated) / 0.5)',
                         border: `1px solid ${supportPlaintiff ? 'rgb(var(--success) / 0.4)' : 'rgb(var(--hairline))'}`,
                         color: supportPlaintiff ? 'rgb(var(--success))' : 'rgb(var(--ink-muted))',
                       }}
@@ -374,7 +403,9 @@ export default function DisputesPage() {
                       onClick={() => setSupportPlaintiff(false)}
                       className="flex-1 rounded-xl p-4 text-center transition-all transition-colors hover:border-[rgb(var(--ink-muted))]"
                       style={{
-                        background: !supportPlaintiff ? 'rgb(var(--danger) / 0.15)' : 'rgb(var(--elevated) / 0.5)',
+                        background: !supportPlaintiff
+                          ? 'rgb(var(--danger) / 0.15)'
+                          : 'rgb(var(--elevated) / 0.5)',
                         border: `1px solid ${!supportPlaintiff ? 'rgb(var(--danger) / 0.4)' : 'rgb(var(--hairline))'}`,
                         color: !supportPlaintiff ? 'rgb(var(--danger))' : 'rgb(var(--ink-muted))',
                       }}
@@ -391,9 +422,12 @@ export default function DisputesPage() {
                     className="btn-primary w-full justify-center text-sm py-3 "
                   >
                     {voting ? (
-                      <><HiOutlineArrowPath className="h-4 w-4 animate-spin" /> Voting…</>
+                      <>
+                        <HiOutlineArrowPath className="h-4 w-4 animate-spin" /> Voting…
+                      </>
                     ) : (
-                      <><HiOutlineHandRaised className="h-4 w-4" />
+                      <>
+                        <HiOutlineHandRaised className="h-4 w-4" />
                         Cast {voteCount || '0'} Votes ({quadraticCost} tokens)
                       </>
                     )}
@@ -407,24 +441,45 @@ export default function DisputesPage() {
               <div className="space-y-4">
                 {loading ? (
                   <div className="rounded-none border border-[rgb(var(--hairline))] bg-[rgb(var(--surface))] p-10 text-center">
-                    <HiOutlineArrowPath className="h-6 w-6 animate-spin mx-auto mb-3" style={{ color: 'rgb(var(--brand))' }} />
+                    <HiOutlineArrowPath
+                      className="h-6 w-6 animate-spin mx-auto mb-3"
+                      style={{ color: 'rgb(var(--brand))' }}
+                    />
                     <p className="text-sm text-[rgb(var(--ink-muted))]">Loading review cases…</p>
                   </div>
                 ) : disputes.length === 0 ? (
                   <div className="rounded-none border border-[rgb(var(--hairline))] bg-[rgb(var(--surface))] p-10 text-center">
-                    <HiOutlineScale className="h-10 w-10 mx-auto mb-3" style={{ color: 'rgb(var(--ink-faint))' }} />
-                    <p className="text-[rgb(var(--ink-muted))]">No peer review challenges have been filed yet.</p>
+                    <HiOutlineScale
+                      className="h-10 w-10 mx-auto mb-3"
+                      style={{ color: 'rgb(var(--ink-faint))' }}
+                    />
+                    <p className="text-[rgb(var(--ink-muted))]">
+                      No peer review challenges have been filed yet.
+                    </p>
                   </div>
                 ) : (
                   disputes.map((d) => (
-                    <div key={d.id} className="rounded-none border border-[rgb(var(--hairline))] bg-[rgb(var(--surface))] p-5 transition-colors hover:border-[rgb(var(--ink-muted))]">
+                    <div
+                      key={d.id}
+                      className="rounded-none border border-[rgb(var(--hairline))] bg-[rgb(var(--surface))] p-5 transition-colors hover:border-[rgb(var(--ink-muted))]"
+                    >
                       <div className="flex items-center justify-between mb-3">
                         <span className="font-semibold text-[rgb(var(--ink))]">Case #{d.id}</span>
                         <span
                           className="rounded-full px-3 py-0.5 text-xs font-semibold"
                           style={{
-                            background: d.status === 0 ? 'rgb(var(--brand) / 0.12)' : d.status === 1 ? 'rgb(var(--success) / 0.12)' : 'rgb(var(--ink-faint) / 0.12)',
-                            color: d.status === 0 ? 'rgb(var(--brand))' : d.status === 1 ? 'rgb(var(--success))' : 'rgb(var(--ink-muted))',
+                            background:
+                              d.status === 0
+                                ? 'rgb(var(--brand) / 0.12)'
+                                : d.status === 1
+                                  ? 'rgb(var(--success) / 0.12)'
+                                  : 'rgb(var(--ink-faint) / 0.12)',
+                            color:
+                              d.status === 0
+                                ? 'rgb(var(--brand))'
+                                : d.status === 1
+                                  ? 'rgb(var(--success))'
+                                  : 'rgb(var(--ink-muted))',
                           }}
                         >
                           {STATUS_LABELS[d.status] || 'Active'}
@@ -433,11 +488,15 @@ export default function DisputesPage() {
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
                           <p className="eyebrow mb-1">Reviewer (Challenger)</p>
-                          <p className="text-xs font-mono truncate text-[rgb(var(--ink-muted))]">{d.plaintiff}</p>
+                          <p className="text-xs font-mono truncate text-[rgb(var(--ink-muted))]">
+                            {d.plaintiff}
+                          </p>
                         </div>
                         <div>
                           <p className="eyebrow mb-1">Submitter</p>
-                          <p className="text-xs font-mono truncate text-[rgb(var(--ink-muted))]">{d.defendant}</p>
+                          <p className="text-xs font-mono truncate text-[rgb(var(--ink-muted))]">
+                            {d.defendant}
+                          </p>
                         </div>
                         <div>
                           <p className="eyebrow mb-1">Clinical Record ID</p>
@@ -447,7 +506,9 @@ export default function DisputesPage() {
                           <p className="eyebrow mb-1">Votes</p>
                           <p className="text-xs">
                             <span style={{ color: 'rgb(var(--success))' }}>✓ {d.yesVotes}</span>
-                            <span className="mx-1" style={{ color: 'rgb(var(--hairline))' }}>|</span>
+                            <span className="mx-1" style={{ color: 'rgb(var(--hairline))' }}>
+                              |
+                            </span>
                             <span style={{ color: 'rgb(var(--danger))' }}>✗ {d.noVotes}</span>
                           </p>
                         </div>

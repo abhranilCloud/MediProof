@@ -7,9 +7,7 @@ export default function WalletButton() {
     return (
       <div className="flex items-center gap-3">
         <div className="hidden sm:flex flex-col items-end">
-          <span className="text-xs font-semibold text-[rgb(var(--brand))]">
-            {balance} XLM
-          </span>
+          <span className="text-xs font-semibold text-[rgb(var(--brand))]">{balance} XLM</span>
           <span className="text-[10px] uppercase tracking-wider text-[rgb(var(--ink-muted))]">
             Testnet
           </span>
@@ -27,10 +25,7 @@ export default function WalletButton() {
   }
 
   return (
-    <button
-      onClick={() => connect()}
-      className="btn-primary h-9 px-4"
-    >
+    <button onClick={() => connect()} className="btn-primary h-9 px-4">
       Connect Wallet
     </button>
   );

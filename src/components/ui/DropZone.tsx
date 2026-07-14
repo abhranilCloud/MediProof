@@ -15,42 +15,54 @@ export default function DropZone({ onFileHashed, disabled = false }: DropZonePro
   const [fileHash, setFileHash] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const hashFile = useCallback(async (file: File) => {
-    setHashing(true);
-    setFileName(file.name);
-    setFileHash('');
-
-    try {
-      const buffer = await file.arrayBuffer();
-      const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      const hex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
-      setFileHash(hex);
-      onFileHashed(hex, file.name, file.size);
-    } catch {
+  const hashFile = useCallback(
+    async (file: File) => {
+      setHashing(true);
+      setFileName(file.name);
       setFileHash('');
-    } finally {
-      setHashing(false);
-    }
-  }, [onFileHashed]);
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setDragging(false);
-    if (disabled) return;
-    const file = e.dataTransfer.files[0];
-    if (file) hashFile(file);
-  }, [disabled, hashFile]);
+      try {
+        const buffer = await file.arrayBuffer();
+        const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+        setFileHash(hex);
+        onFileHashed(hex, file.name, file.size);
+      } catch {
+        setFileHash('');
+      } finally {
+        setHashing(false);
+      }
+    },
+    [onFileHashed],
+  );
 
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) hashFile(file);
-  }, [hashFile]);
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      setDragging(false);
+      if (disabled) return;
+      const file = e.dataTransfer.files[0];
+      if (file) hashFile(file);
+    },
+    [disabled, hashFile],
+  );
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) hashFile(file);
+    },
+    [hashFile],
+  );
 
   return (
     <div className="space-y-3">
       <div
-        onDragOver={(e) => { e.preventDefault(); if (!disabled) setDragging(true); }}
+        onDragOver={(e) => {
+          e.preventDefault();
+          if (!disabled) setDragging(true);
+        }}
         onDragLeave={() => setDragging(false)}
         onDrop={handleDrop}
         onClick={() => !disabled && inputRef.current?.click()}
@@ -81,11 +93,10 @@ export default function DropZone({ onFileHashed, disabled = false }: DropZonePro
           <>
             <HiOutlineCloudArrowUp className="h-10 w-10 text-brand-400" />
             <p className="text-sm text-slate-300">
-              Drag & drop your file here, or <span className="text-brand-400 font-medium">browse</span>
+              Drag & drop your file here, or{' '}
+              <span className="text-brand-400 font-medium">browse</span>
             </p>
-            <p className="text-xs text-slate-500">
-              File is hashed locally — never uploaded
-            </p>
+            <p className="text-xs text-slate-500">File is hashed locally — never uploaded</p>
           </>
         )}
       </div>

@@ -32,20 +32,20 @@ export default function App() {
       />
       <Routes>
         <Route path="/" element={<Landing />} />
-        
+
         <Route
           path="/*"
           element={
             <DashboardLayout>
               <Routes>
-                <Route path="/dashboard"  element={<Dashboard />} />
-                <Route path="/register"   element={<Register />} />
-                <Route path="/verify"     element={<Verify />} />
-                <Route path="/split"      element={<Split />} />
-                <Route path="/licenses"   element={<Licenses />} />
-                <Route path="/disputes"   element={<Disputes />} />
-                <Route path="/portfolio"  element={<Portfolio />} />
-                <Route path="/transfer"   element={<Transfer />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/verify" element={<Verify />} />
+                <Route path="/split" element={<Split />} />
+                <Route path="/licenses" element={<Licenses />} />
+                <Route path="/disputes" element={<Disputes />} />
+                <Route path="/portfolio" element={<Portfolio />} />
+                <Route path="/transfer" element={<Transfer />} />
               </Routes>
             </DashboardLayout>
           }

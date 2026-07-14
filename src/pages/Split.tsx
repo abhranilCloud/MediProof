@@ -8,7 +8,12 @@ import { stellar } from '@/lib/stellar';
 import { CONSORTIUM_CONTRACT_ID } from '@/lib/constants';
 import * as StellarSdk from '@stellar/stellar-sdk';
 import toast from 'react-hot-toast';
-import { HiOutlinePlusCircle, HiOutlineMinusCircle, HiOutlineArrowPath, HiArrowTopRightOnSquare } from 'react-icons/hi2';
+import {
+  HiOutlinePlusCircle,
+  HiOutlineMinusCircle,
+  HiOutlineArrowPath,
+  HiArrowTopRightOnSquare,
+} from 'react-icons/hi2';
 import { RiGroupLine } from 'react-icons/ri';
 
 interface Investigator {
@@ -56,11 +61,11 @@ export default function SplitPage() {
     (index: number, field: 'address' | 'share', value: string | number) => {
       setInvestigators((prev) =>
         prev.map((c, i) =>
-          i === index ? { ...c, [field]: field === 'share' ? Number(value) : value } : c
-        )
+          i === index ? { ...c, [field]: field === 'share' ? Number(value) : value } : c,
+        ),
       );
     },
-    []
+    [],
   );
 
   const handleSubmit = useCallback(async () => {
@@ -74,10 +79,10 @@ export default function SplitPage() {
       }
 
       const creatorAddresses = investigators.map((c) =>
-        StellarSdk.nativeToScVal(c.address, { type: 'address' })
+        StellarSdk.nativeToScVal(c.address, { type: 'address' }),
       );
       const creatorShares = investigators.map((c) =>
-        StellarSdk.nativeToScVal(c.share, { type: 'u32' })
+        StellarSdk.nativeToScVal(c.share, { type: 'u32' }),
       );
 
       const args = [
@@ -120,15 +125,14 @@ export default function SplitPage() {
 
   return (
     <>
-      
       <main className="mx-auto max-w-2xl px-4 py-12">
         <p className="eyebrow mb-3">Institutional Grants</p>
         <h1 className="text-3xl font-extrabold tracking-tight mb-2 text-[rgb(var(--ink))]">
           <span className="text-[rgb(var(--ink))]">Research Funding</span> Allocation
         </h1>
         <p className="text-sm mb-10 text-[rgb(var(--ink-muted))]">
-          Register a clinical research trial or medical dataset with multiple Co-Principal Investigators and
-          custom funding percentages. Allocations must total exactly 100%.
+          Register a clinical research trial or medical dataset with multiple Co-Principal
+          Investigators and custom funding percentages. Allocations must total exactly 100%.
         </p>
 
         {!isConnected ? (
@@ -212,18 +216,21 @@ export default function SplitPage() {
               <div
                 className="mt-4 flex items-center justify-between rounded-lg px-4 py-2"
                 style={{
-                  background: totalShares === 10000
-                    ? 'rgb(var(--success) / 0.12)'
-                    : 'rgb(var(--danger) / 0.12)',
-                  border: `1px solid ${totalShares === 10000
-                    ? 'rgb(var(--success) / 0.3)'
-                    : 'rgb(var(--danger) / 0.3)'}`,
+                  background:
+                    totalShares === 10000
+                      ? 'rgb(var(--success) / 0.12)'
+                      : 'rgb(var(--danger) / 0.12)',
+                  border: `1px solid ${
+                    totalShares === 10000 ? 'rgb(var(--success) / 0.3)' : 'rgb(var(--danger) / 0.3)'
+                  }`,
                 }}
               >
                 <span className="text-xs text-[rgb(var(--ink-muted))]">Total</span>
                 <span
                   className="text-sm font-bold"
-                  style={{ color: totalShares === 10000 ? 'rgb(var(--success))' : 'rgb(var(--danger))' }}
+                  style={{
+                    color: totalShares === 10000 ? 'rgb(var(--success))' : 'rgb(var(--danger))',
+                  }}
                 >
                   {(totalShares / 100).toFixed(1)}% / 100%
                 </span>
@@ -252,11 +259,14 @@ export default function SplitPage() {
               className="btn-primary w-full justify-center text-sm py-3 "
             >
               {busy ? (
-                <><HiOutlineArrowPath className="h-4 w-4 animate-spin" />
+                <>
+                  <HiOutlineArrowPath className="h-4 w-4 animate-spin" />
                   {txStatus === 'signing' ? 'Signing…' : 'Executing Smart Contract…'}
                 </>
               ) : (
-                <><RiGroupLine className="h-4 w-4" /> Finalize Funding Allocation</>
+                <>
+                  <RiGroupLine className="h-4 w-4" /> Finalize Funding Allocation
+                </>
               )}
             </button>
 

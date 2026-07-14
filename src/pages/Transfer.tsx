@@ -5,7 +5,11 @@ import { useState, useCallback } from 'react';
 import { useWallet } from '@/hooks/useWallet';
 import { stellar } from '@/lib/stellar';
 import toast from 'react-hot-toast';
-import { HiOutlineArrowPath, HiOutlinePaperAirplane, HiArrowTopRightOnSquare } from 'react-icons/hi2';
+import {
+  HiOutlineArrowPath,
+  HiOutlinePaperAirplane,
+  HiArrowTopRightOnSquare,
+} from 'react-icons/hi2';
 
 type TxStatus = 'idle' | 'signing' | 'polling' | 'success' | 'failed';
 
@@ -47,22 +51,23 @@ export default function TransferPage() {
 
   return (
     <>
-      
       <main className="mx-auto max-w-lg px-4 py-12">
         <p className="eyebrow mb-3">Institutional Treasury</p>
         <h1 className="text-3xl font-extrabold tracking-tight mb-2 text-[rgb(var(--ink))]">
           Treasury <span className="text-[rgb(var(--ink))]">XLM Transfers</span>
         </h1>
         <p className="text-sm mb-10 text-[rgb(var(--ink-muted))]">
-          Transfer native XLM to any Stellar address — for clinical trial disbursements, research grants,
-          or institutional data access fees on the network.
+          Transfer native XLM to any Stellar address — for clinical trial disbursements, research
+          grants, or institutional data access fees on the network.
         </p>
 
         {!isConnected ? (
           <div className="rounded-none border border-[rgb(var(--hairline))] bg-[rgb(var(--surface))] p-10 text-center">
             <div className="text-4xl mb-4">⚕</div>
             <p className="font-semibold mb-1 text-[rgb(var(--ink))]">Authentication Required</p>
-            <p className="text-sm text-[rgb(var(--ink-muted))]">Connect your institutional wallet to disburse funds.</p>
+            <p className="text-sm text-[rgb(var(--ink-muted))]">
+              Connect your institutional wallet to disburse funds.
+            </p>
           </div>
         ) : (
           <div className="rounded-none border border-[rgb(var(--hairline))] bg-[rgb(var(--surface))] p-6 space-y-5">
@@ -116,11 +121,14 @@ export default function TransferPage() {
               className="btn-primary w-full justify-center text-sm py-3 "
             >
               {busy ? (
-                <><HiOutlineArrowPath className="h-4 w-4 animate-spin" />
+                <>
+                  <HiOutlineArrowPath className="h-4 w-4 animate-spin" />
                   {txStatus === 'signing' ? 'Signing…' : 'Confirming…'}
                 </>
               ) : (
-                <><HiOutlinePaperAirplane className="h-4 w-4" /> Disburse XLM Funds</>
+                <>
+                  <HiOutlinePaperAirplane className="h-4 w-4" /> Disburse XLM Funds
+                </>
               )}
             </button>
 
@@ -128,7 +136,10 @@ export default function TransferPage() {
             {txHash && (
               <div
                 className="rounded-lg p-4"
-                style={{ background: 'rgb(var(--elevated) / 0.6)', border: '1px solid rgb(var(--hairline))' }}
+                style={{
+                  background: 'rgb(var(--elevated) / 0.6)',
+                  border: '1px solid rgb(var(--hairline))',
+                }}
               >
                 <p className="eyebrow mb-1.5">Transaction Hash</p>
                 <a
@@ -144,11 +155,12 @@ export default function TransferPage() {
                 <p
                   className="text-xs mt-2 font-semibold"
                   style={{
-                    color: txStatus === 'success'
-                      ? 'rgb(var(--success))'
-                      : txStatus === 'failed'
-                      ? 'rgb(var(--danger))'
-                      : 'rgb(var(--warn))',
+                    color:
+                      txStatus === 'success'
+                        ? 'rgb(var(--success))'
+                        : txStatus === 'failed'
+                          ? 'rgb(var(--danger))'
+                          : 'rgb(var(--warn))',
                   }}
                 >
                   Status: {txStatus.toUpperCase()}

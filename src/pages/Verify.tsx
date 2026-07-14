@@ -7,7 +7,11 @@ import { useWallet } from '@/hooks/useWallet';
 import { stellar } from '@/lib/stellar';
 import { MED_RECORD_CONTRACT_ID } from '@/lib/constants';
 import * as StellarSdk from '@stellar/stellar-sdk';
-import { HiOutlineMagnifyingGlass, HiOutlineArrowPath, HiArrowTopRightOnSquare } from 'react-icons/hi2';
+import {
+  HiOutlineMagnifyingGlass,
+  HiOutlineArrowPath,
+  HiArrowTopRightOnSquare,
+} from 'react-icons/hi2';
 
 interface VerifyResult {
   found: boolean;
@@ -92,7 +96,6 @@ export default function VerifyPage() {
 
   return (
     <>
-      
       <main className="mx-auto max-w-2xl px-4 py-12">
         <p className="eyebrow mb-3">Clinical Data Integrity</p>
         <h1 className="text-3xl font-extrabold tracking-tight mb-2 text-[rgb(var(--ink))]">
@@ -126,7 +129,10 @@ export default function VerifyPage() {
                 id="verify-manual-hash"
                 type="text"
                 value={manualHash}
-                onChange={(e) => { setManualHash(e.target.value); setResult(null); }}
+                onChange={(e) => {
+                  setManualHash(e.target.value);
+                  setResult(null);
+                }}
                 placeholder="Enter 64-character SHA-256 hex hash…"
                 className="input-field font-mono text-sm"
               />
@@ -136,13 +142,17 @@ export default function VerifyPage() {
             <button
               id="verify-submit-btn"
               onClick={handleVerify}
-              disabled={verifying || (!hashToDisplay)}
+              disabled={verifying || !hashToDisplay}
               className="btn-primary w-full justify-center text-sm py-3 "
             >
               {verifying ? (
-                <><HiOutlineArrowPath className="h-4 w-4 animate-spin" /> Auditing Ledger…</>
+                <>
+                  <HiOutlineArrowPath className="h-4 w-4 animate-spin" /> Auditing Ledger…
+                </>
               ) : (
-                <><HiOutlineMagnifyingGlass className="h-4 w-4" /> Audit On-Chain Evidence</>
+                <>
+                  <HiOutlineMagnifyingGlass className="h-4 w-4" /> Audit On-Chain Evidence
+                </>
               )}
             </button>
 
@@ -161,11 +171,17 @@ export default function VerifyPage() {
                     <div className="flex items-center gap-2 mb-5">
                       <span
                         className="rounded-full px-3 py-1 text-xs font-semibold"
-                        style={{ background: 'rgb(var(--success) / 0.15)', color: 'rgb(var(--success))' }}
+                        style={{
+                          background: 'rgb(var(--success) / 0.15)',
+                          color: 'rgb(var(--success))',
+                        }}
                       >
                         ✓ Registered
                       </span>
-                      <span className="text-sm font-semibold" style={{ color: 'rgb(var(--success))' }}>
+                      <span
+                        className="text-sm font-semibold"
+                        style={{ color: 'rgb(var(--success))' }}
+                      >
                         Document found on-chain
                       </span>
                     </div>
@@ -181,12 +197,16 @@ export default function VerifyPage() {
                       {result.recordType && (
                         <div>
                           <p className="eyebrow mb-1">Classification</p>
-                          <p className="text-sm text-[rgb(var(--ink-muted))]">{result.recordType}</p>
+                          <p className="text-sm text-[rgb(var(--ink-muted))]">
+                            {result.recordType}
+                          </p>
                         </div>
                       )}
                       <div>
                         <p className="eyebrow mb-1">Registered By (Stellar Public Key)</p>
-                        <p className="text-xs font-mono break-all text-[rgb(var(--ink-muted))]">{result.creator}</p>
+                        <p className="text-xs font-mono break-all text-[rgb(var(--ink-muted))]">
+                          {result.creator}
+                        </p>
                       </div>
                       <div>
                         <p className="eyebrow mb-1">Timestamp</p>
@@ -196,7 +216,9 @@ export default function VerifyPage() {
                   </>
                 ) : (
                   <div className="py-4 text-center">
-                    <p className="text-lg font-semibold mb-2" style={{ color: 'rgb(var(--warn))' }}>✗ Not Found</p>
+                    <p className="text-lg font-semibold mb-2" style={{ color: 'rgb(var(--warn))' }}>
+                      ✗ Not Found
+                    </p>
                     <p className="text-sm text-[rgb(var(--ink-muted))]">
                       This document hash has not been registered on the MediProof registry.
                     </p>

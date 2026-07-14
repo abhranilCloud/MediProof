@@ -102,7 +102,6 @@ export default function RegisterPage() {
 
   return (
     <>
-      
       <main className="mx-auto max-w-2xl px-4 py-12">
         {/* Header */}
         <p className="eyebrow mb-3">Clinical Data Registry</p>
@@ -110,30 +109,36 @@ export default function RegisterPage() {
           Register a <span className="text-[rgb(var(--ink))]">Cryptographic Proof</span>
         </h1>
         <p className="text-sm mb-10 text-[rgb(var(--ink-muted))]">
-          Generate a client-side SHA-256 fingerprint for your clinical record. Patient data never leaves the browser environment.
+          Generate a client-side SHA-256 fingerprint for your clinical record. Patient data never
+          leaves the browser environment.
         </p>
 
         {!isConnected ? (
           <div className="rounded-none border border-[rgb(var(--hairline))] bg-[rgb(var(--surface))] p-10 text-center">
             <div className="text-4xl mb-4">⚕</div>
-            <p className="font-semibold mb-1 text-[rgb(var(--ink))]">
-              Authentication Required
-            </p>
+            <p className="font-semibold mb-1 text-[rgb(var(--ink))]">Authentication Required</p>
             <p className="text-sm text-[rgb(var(--ink-muted))]">
               Connect your institutional wallet to register records.
             </p>
           </div>
         ) : (
           <div className="space-y-5">
-
             {/* Step 1 — File Hash */}
             <div className="rounded-none border border-[rgb(var(--hairline))] bg-[rgb(var(--surface))] p-6">
               <p className="eyebrow mb-4">01 — Client-Side Proof Generation</p>
               <DropZone onFileHashed={handleFileHashed} disabled={busy} />
               {fileHash && (
-                <div className="mt-4 rounded-lg p-3" style={{ background: 'rgb(var(--canvas))', border: '1px solid rgb(var(--hairline))' }}>
+                <div
+                  className="mt-4 rounded-lg p-3"
+                  style={{
+                    background: 'rgb(var(--canvas))',
+                    border: '1px solid rgb(var(--hairline))',
+                  }}
+                >
                   <p className="eyebrow mb-1">SHA-256 Hash</p>
-                  <p className="text-xs font-mono break-all" style={{ color: 'rgb(var(--brand))' }}>{fileHash}</p>
+                  <p className="text-xs font-mono break-all" style={{ color: 'rgb(var(--brand))' }}>
+                    {fileHash}
+                  </p>
                 </div>
               )}
             </div>
@@ -143,7 +148,9 @@ export default function RegisterPage() {
               <p className="eyebrow mb-2">02 — Clinical Metadata</p>
 
               <div>
-                <label className="eyebrow mb-1.5 block uppercase">Clinical Record ID (Pseudonymous) *</label>
+                <label className="eyebrow mb-1.5 block uppercase">
+                  Clinical Record ID (Pseudonymous) *
+                </label>
                 <input
                   id="register-title"
                   type="text"
@@ -163,7 +170,9 @@ export default function RegisterPage() {
                   className="input-field text-sm"
                 >
                   {RECORD_TYPES.map((t) => (
-                    <option key={t} value={t}>{t}</option>
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -212,7 +221,12 @@ export default function RegisterPage() {
                   </div>
                   <div>
                     <p className="eyebrow mb-1">SHA-256 Hash</p>
-                    <p className="text-xs font-mono break-all" style={{ color: 'rgb(var(--ink-faint))' }}>{fileHash}</p>
+                    <p
+                      className="text-xs font-mono break-all"
+                      style={{ color: 'rgb(var(--ink-faint))' }}
+                    >
+                      {fileHash}
+                    </p>
                   </div>
                   <div>
                     <p className="eyebrow mb-1">Transaction</p>
