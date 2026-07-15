@@ -1,105 +1,224 @@
-# MediProof - Clinical Data Provenance on Soroban
+<div align="center">
+  <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px;">
+    <div style="background-color: #3b82f6; color: white; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 24px;">⚕</div>
+    <h1 style="margin: 0;">MediProof</h1>
+  </div>
+  
+  <p><strong>Enterprise-Grade Clinical Data Provenance on Stellar Soroban</strong></p>
 
-MediProof is a decentralized clinical data provenance and institutional access management application built on the Stellar Soroban network. It facilitates zero-knowledge-like verification of medical records, handles institutional data agreements, and offers a DAO structure for peer review.
+  <p>
+    <a href="https://github.com/abhranilCloud/MediProof/actions"><img src="https://img.shields.io/github/actions/workflow/status/abhranilCloud/MediProof/ci.yml?branch=main&label=Build%20%26%20Test&style=flat-square" alt="Build Status"></a>
+    <a href="https://github.com/abhranilCloud/MediProof/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License"></a>
+    <a href="https://soroban.stellar.org/"><img src="https://img.shields.io/badge/Stellar-Soroban-black?style=flat-square" alt="Soroban"></a>
+    <a href="https://vitejs.dev/"><img src="https://img.shields.io/badge/Vite-React-646CFF?style=flat-square&logo=vite" alt="Vite React"></a>
+  </p>
+</div>
 
-## Architecture
+<hr/>
 
-MediProof relies on two primary smart contracts:
-1. **Registry Contract:** Handles IP hashing, registration, and evidence verification.
-2. **License DAO Contract:** Manages commercial and research data access agreements, integrating with the Registry contract via cross-contract calls to verify IP.
+MediProof is a zero-knowledge clinical data infrastructure layer built on the Stellar Soroban smart contract network. It empowers healthcare institutions, researchers, and patients to anchor cryptographic proofs of electronic health records (EHR), clinical trials, and medical evidence on-chain **without exposing any Protected Health Information (PHI)**.
 
-This repository features a complete frontend written in React, Vite, and Tailwind CSS, bundled with comprehensive Vitest unit tests, and GitHub Actions CI pipelines for robust production deployment.
+## 📖 Table of Contents
 
-![MediProof Landing](docs/assets/landing.png) <!-- Update with actual screenshot path -->
+- [Overview](#-overview)
+- [Key Features](#-key-features)
+- [System Architecture](#-system-architecture)
+- [Smart Contracts](#-smart-contracts)
+- [Tech Stack](#-tech-stack)
+- [Getting Started](#-getting-started)
+- [Deployment Workflow](#-deployment-workflow)
+- [Security & Compliance](#-security--compliance)
+- [Testing](#-testing)
+- [License](#-license)
 
-## 🌟 Key Features
+---
 
-* **Client-Side Document Hashing (HIPAA-Compliant)**
-  Documents are hashed locally in the browser using the Web Crypto API. The raw file never leaves the client, ensuring complete privacy and regulatory compliance.
-* **Immutable Provenance Registry**
-  Registers the resulting SHA-256 hash on the Stellar ledger, creating an immutable, timestamped proof of existence.
-* **Zero-Knowledge Clinical Audits**
-  Third parties can independently re-hash a local medical file and query the registry to verify its authenticity, timestamp, and the identity of the registrar without relying on centralized databases.
-* **Institutional Access Protocols**
-  Configure on-chain data-sharing agreements (Open Access, Restricted Research, Commercial) and provision cryptographic access keys to verified institutions.
-* **Research Grant Allocations (Treasury)**
-  Manage and disburse native XLM grants to multiple Co-Principal Investigators. Transfer allocation rights securely on-chain.
-* **Clinical Peer Review (DAO)**
-  Flag data integrity issues, submit counter-evidence, and resolve clinical data challenges through decentralized Quadratic Voting.
+## 🔍 Overview
 
-## 🏗️ Architecture
+The current healthcare ecosystem suffers from fragmented data, lack of auditability, and inefficient inter-institutional sharing. MediProof solves this by utilizing Stellar's high-throughput ledger and Soroban smart contracts to create a decentralized source of truth for medical data integrity. 
 
-- **Frontend**: React 18 + Vite, TailwindCSS (Monochrome Clinical Theme)
-- **Smart Contracts**: Rust (Stellar Soroban)
-- **Wallet Integration**: Freighter Wallet
-- **Network**: Stellar Testnet
+By hashing files client-side and registering the proofs on-chain, MediProof provides mathematical certainty of data provenance without violating HIPAA or GDPR compliance.
 
-## 🚀 Quick Start
+## ✨ Key Features
+
+1. **Client-Side Document Hashing (Zero-Knowledge)**
+   Documents are hashed locally in the browser using the Web Crypto API. The raw file never leaves the client, ensuring complete privacy and regulatory compliance.
+2. **Immutable Provenance Registry**
+   Registers the resulting SHA-256 hash on the Stellar ledger, creating an immutable, timestamped proof of existence.
+3. **Cross-Contract Institutional Access**
+   Configure on-chain data-sharing agreements (Open Access, Restricted Research, Commercial) via the `License DAO Contract`, which cross-verifies IP with the `Registry Contract`.
+4. **Clinical Peer Review (DAO)**
+   Flag data integrity issues, submit counter-evidence, and resolve clinical data challenges through decentralized Quadratic Voting.
+5. **Research Grant Allocations (Treasury)**
+   Manage and disburse native XLM grants to multiple Co-Principal Investigators. Transfer allocation rights securely on-chain.
+
+---
+
+## 🏗️ System Architecture
+
+MediProof follows a modular, microservice-like architecture on-chain, coupled with a robust, mobile-responsive React frontend.
+
+```mermaid
+graph TD
+    Client[Browser Frontend (React/Vite)]
+    Wallet[Freighter Wallet / Soroban RPC]
+    
+    subgraph Soroban Network [Stellar Soroban Testnet]
+        Registry[Registry Contract]
+        LicenseDAO[License DAO Contract]
+        Treasury[Co-Ownership Contract]
+    end
+
+    Client -- "1. Hash File Locally" --> Client
+    Client -- "2. Sign Tx" --> Wallet
+    Wallet -- "3. Submit Hash" --> Registry
+    Wallet -- "4. Grant Access" --> LicenseDAO
+    LicenseDAO -- "Cross-Contract Verify" --> Registry
+    Wallet -- "5. Distribute Grant" --> Treasury
+```
+
+### File Structure
+
+```text
+MediProof/
+├── contracts/                  # Soroban Rust Smart Contracts
+│   ├── registry-contract/      # Core IP Registration logic
+│   └── license-dao-contract/   # Cross-contract Access & Voting logic
+├── src/                        # React Frontend App
+│   ├── components/             # Reusable UI & Layouts
+│   ├── hooks/                  # Custom React Hooks (useWallet)
+│   ├── lib/                    # Core libraries (Stellar SDK wrapper)
+│   ├── pages/                  # Route views (Dashboard, Verify, etc)
+│   └── utils/                  # Environment and formatting utils
+├── __tests__/                  # Vitest UI Component Tests
+├── .github/workflows/          # CI/CD Pipelines (Build & Test)
+└── scripts/                    # Automated deployment bash scripts
+```
+
+---
+
+## 📜 Smart Contracts
+
+### 1. Registry Contract
+Acts as the foundational layer. It accepts `SHA-256` hashes from authorized users and records them alongside a timestamp.
+* **Methods:** `register_work`, `verify_work`, `transfer_ownership`.
+
+### 2. License DAO Contract
+Manages permissions and peer-review disputes. It utilizes **cross-contract calls** to ensure any license granted refers to a valid record in the Registry.
+* **Methods:** `init_contract`, `create_license`, `grant_access`, `file_dispute`, `vote_dispute`.
+
+---
+
+## 💻 Tech Stack
+
+**Frontend:**
+- React 18
+- Vite
+- Tailwind CSS
+- React Router DOM
+- React Icons & Hot Toast
+
+**Blockchain & Web3:**
+- Rust (Soroban SDK `v22.0.1`)
+- Stellar Wallets Kit (`@creit.tech/stellar-wallets-kit`)
+- Stellar SDK (`@stellar/stellar-sdk`)
+
+**Tooling & CI/CD:**
+- Vitest & React Testing Library
+- Prettier & ESLint
+- GitHub Actions
+- Netlify (Production Hosting)
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
-- [Node.js](https://nodejs.org/) (v18+)
-- [Stellar Freighter Wallet Extension](https://www.freighter.app/)
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/abhranilCloud/mediproof.git
-   cd mediproof
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Configure Environment Variables**
-   Create a `.env.local` file in the root directory and add your contract IDs (obtained after deployment):
-   ```env
-   VITE_NETWORK=TESTNET
-   VITE_REGISTRY_CONTRACT_ID=your_registry_contract_id
-   VITE_CO_OWNERSHIP_CONTRACT_ID=your_co_ownership_contract_id
-   VITE_LICENSE_DAO_CONTRACT_ID=your_license_dao_contract_id
-   ```
-
-4. **Start the Development Server**
-   ```bash
-   npm run dev
-   ```
-   Open `http://localhost:5173` in your browser.
-
-## 🛠️ Smart Contract Deployment
-
-If you wish to deploy your own instances of the Soroban contracts, follow the steps below.
-
-### Prerequisites for Contracts
-- Rust toolchain (`rustup target add wasm32-unknown-unknown`)
+- Node.js (v20+)
+- Rust Toolchain (`rustup target add wasm32-unknown-unknown`)
 - Stellar CLI
+- Freighter Wallet Browser Extension
 
-### Build & Deploy
-1. **Build Contracts**
+### 1. Local Setup
+
+Clone the repository and install dependencies:
+```bash
+git clone https://github.com/abhranilCloud/MediProof.git
+cd MediProof
+npm ci
+```
+
+### 2. Environment Configuration
+
+Create a `.env.local` file in the root directory:
+```env
+VITE_NETWORK=TESTNET
+VITE_RPC_URL=https://soroban-testnet.stellar.org
+VITE_REGISTRY_CONTRACT_ID=<YOUR_DEPLOYED_REGISTRY_ID>
+VITE_DAO_CONTRACT_ID=<YOUR_DEPLOYED_DAO_ID>
+```
+
+### 3. Start Development Server
+
+```bash
+npm run dev
+```
+The application will be available at `http://localhost:5173`.
+
+---
+
+## 🛠️ Deployment Workflow
+
+We have provided a streamlined bash script to compile and deploy your contracts to the Stellar Testnet automatically.
+
+1. Ensure your CLI is configured and funded:
    ```bash
-   stellar contract build
+   stellar keys generate --network testnet admin
    ```
-2. **Deploy to Testnet**
+2. Run the deployment script:
    ```bash
-   stellar contract deploy \
-     --wasm target/wasm32-unknown-unknown/release/registry_contract.wasm \
-     --source <YOUR_FUNDED_ACCOUNT> \
-     --network testnet
+   chmod +x scripts/deploy.sh
+   ./scripts/deploy.sh
    ```
-   *Repeat the deployment step for the Co-Ownership and License DAO contracts, and update your `.env.local`.*
+   *This script automatically builds the `.wasm` binaries and updates your `.env.local` with the new Contract IDs.*
 
-## 🔒 Security & Privacy
+---
 
-MediProof is designed around the principle of **Zero-Knowledge Data Anchoring**. 
-- **No PHI on-chain**: Only irreversible cryptographic hashes (SHA-256) are stored on the ledger.
-- **Client-Side Processing**: Files are processed in the user's browser memory and discarded immediately.
-- **Access Control**: Built-in smart contract level access control ensures only authorized wallets can invoke sensitive state-changing functions.
+## 🧪 Testing
+
+MediProof is rigorously tested across both the smart contract and frontend layers.
+
+**Run Smart Contract Tests (Rust):**
+```bash
+cargo test --manifest-path contracts/registry-contract/Cargo.toml
+cargo test --manifest-path contracts/license-dao-contract/Cargo.toml
+```
+
+**Run Frontend UI Tests (Vitest):**
+```bash
+npm run test
+```
+
+**Static Analysis:**
+```bash
+npm run check  # Runs TypeScript strict checks and ESLint
+```
+
+---
+
+## 🔒 Security & Compliance
+
+MediProof is architected with enterprise healthcare compliance (HIPAA, GDPR) in mind:
+- **Zero-Knowledge Anchoring**: Raw files are processed in volatile browser memory. Only cryptographic hashes are transmitted and stored.
+- **On-Chain RBAC**: Smart contract functions implement strict `require_auth()` checks ensuring only asset owners can mutate state or grant access.
+- **Cross-Contract Validation**: The DAO contract inherently trusts the Registry contract, preventing rogue licenses from being issued for non-existent records.
+
+---
 
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
 
----
-*Built for the future of decentralized healthcare data integrity.*
+<div align="center">
+  <i>Built for the future of decentralized healthcare data integrity.</i>
+</div>
