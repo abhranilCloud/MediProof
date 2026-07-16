@@ -11,6 +11,14 @@ import Portfolio from './pages/Portfolio';
 import Transfer from './pages/Transfer';
 import DashboardLayout from './components/layout/DashboardLayout';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
+import { StellarWalletsKit, WalletNetwork, allowAllModules, FREIGHTER_ID } from '@creit.tech/stellar-wallets-kit';
+
+// Initialize wallet kit for the application (Wallet Connection Implementation)
+export const walletKit = new StellarWalletsKit({
+  network: WalletNetwork.TESTNET,
+  selectedWalletId: FREIGHTER_ID,
+  modules: allowAllModules(),
+});
 
 export default function App() {
   return (
