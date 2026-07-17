@@ -19,17 +19,18 @@
 ## 🏆 Level 3 Submission Checklist Details
 
 - **Live Demo:** https://mediproof.netlify.app/
-- **Demo Video:** [Insert YouTube/Loom Link Here]
+- **Demo Video:** [Watch Video](./assets/demo.mp4)
 - **Registry Contract ID:** `CBVC2QH6QUFXTRMLWN7AYT2DAUUZRQKRAVLYVCGAJ3UZLB6FU4CKSW75`
 - **License DAO Contract ID:** `CCFAGSHGYWELQKX4OU4TLXIY3XOSNMKN4C25AVKFQCF2QELYTIL2MMVV`
 - **Registry Deployment TX:** `1fd39141b9a618d6f7c1750d403f38a6e3c081d4e1b7e22588f374d2a23378c7`
 - **DAO Deployment TX:** `130b5dd7521791ef049428c526206395dc397222b7a624a39061624f08d4d2f7`
 
-### Screenshots (Placeholders)
-*(Please upload your screenshots to the `assets/` folder and replace the paths below)*
-- **Mobile Responsive UI:** ![Mobile UI](assets/mobile_ui.png)
-- **CI/CD Pipeline Running:** ![CI/CD](assets/cicd_pipeline.png)
-- **Tests Passing:** ![Tests](assets/tests_passing.png)
+### Screenshots
+- **Mobile Responsive UI:** ![Mobile UI](./assets/mobUi.png)
+- **Desktop UI 1:** ![UI 1](./assets/ui1.png)
+- **Desktop UI 2:** ![UI 2](./assets/ui2.png)
+- **Desktop UI 3:** ![UI 3](./assets/ui3.png)
+- **CI/CD Pipeline Running:** ![CI/CD](./assets/cicd.png)
 
 ---<hr/>
 
