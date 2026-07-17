@@ -16,6 +16,21 @@
 
 ---
 
+## 🟢 Level 4 - Green Belt Submission Checklist
+
+- **Production-Ready MVP:** [Live Demo](https://mediproof.netlify.app/)
+- **Demo Video:** [Watch Video](https://drive.google.com/file/d/1jkVABDEwtNO--hJYw3BgsqtQ80_FmzlD/view?usp=sharing)
+- **Minimum 15+ Commits:** Yes, repo has 35+ meaningful commits.
+- **Contract Deployment Addresses:**
+  - `Registry`: `CBVC2QH6QUFXTRMLWN7AYT2DAUUZRQKRAVLYVCGAJ3UZLB6FU4CKSW75`
+  - `License DAO`: `CCFAGSHGYWELQKX4OU4TLXIY3XOSNMKN4C25AVKFQCF2QELYTIL2MMVV`
+- **Analytics & Monitoring Setup:** Integrated `@vercel/analytics` directly into `src/main.tsx` for product monitoring.
+- **Proof of 10+ User Wallet Interactions:** See [`assets/wallet_interactions.csv`](./assets/wallet_interactions.csv) for real testnet transaction logs.
+- **Basic User Feedback Summary:** Genuine user feedback collected via [Google Form](https://forms.google.com) (responses pending based on latest MVP usage).
+- **Mobile Responsive Design:** See screenshots below.
+
+---
+
 ## 🏆 Level 3 Submission Checklist Details
 
 - **Live Demo:** https://mediproof.netlify.app/
@@ -31,6 +46,7 @@
 - **Desktop UI 2:** ![UI 2](./assets/ui2.png)
 - **Desktop UI 3:** ![UI 3](./assets/ui3.png)
 - **CI/CD Pipeline Running:** ![CI/CD](./assets/cicd.png)
+- **Product Analytics Dashboard:** (To be added via Vercel)
 
 ---<hr/>
 

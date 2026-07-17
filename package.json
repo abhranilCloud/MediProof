@@ -15,6 +15,7 @@
   "dependencies": {
     "@creit.tech/stellar-wallets-kit": "^1.9.5",
     "@stellar/stellar-sdk": "^16.0.1",
+    "@vercel/analytics": "^2.0.1",
     "date-fns": "^3.6.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
