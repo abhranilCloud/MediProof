@@ -19,7 +19,7 @@
 ## 🏆 Level 3 Submission Checklist Details
 
 - **Live Demo:** https://mediproof.netlify.app/
-- **Demo Video:** [Watch Video](./assets/demo.mp4)
+- **Demo Video:** [Watch Video](https://drive.google.com/file/d/1jkVABDEwtNO--hJYw3BgsqtQ80_FmzlD/view?usp=sharing)
 - **Registry Contract ID:** `CBVC2QH6QUFXTRMLWN7AYT2DAUUZRQKRAVLYVCGAJ3UZLB6FU4CKSW75`
 - **License DAO Contract ID:** `CCFAGSHGYWELQKX4OU4TLXIY3XOSNMKN4C25AVKFQCF2QELYTIL2MMVV`
 - **Registry Deployment TX:** `1fd39141b9a618d6f7c1750d403f38a6e3c081d4e1b7e22588f374d2a23378c7`
