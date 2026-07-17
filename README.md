@@ -14,7 +14,24 @@
   </p>
 </div>
 
-<hr/>
+---
+
+## 🏆 Level 3 Submission Checklist Details
+
+- **Live Demo:** https://mediproof.netlify.app/
+- **Demo Video:** [Insert YouTube/Loom Link Here]
+- **Registry Contract ID:** `CBVC2QH6QUFXTRMLWN7AYT2DAUUZRQKRAVLYVCGAJ3UZLB6FU4CKSW75`
+- **License DAO Contract ID:** `CCFAGSHGYWELQKX4OU4TLXIY3XOSNMKN4C25AVKFQCF2QELYTIL2MMVV`
+- **Registry Deployment TX:** `1fd39141b9a618d6f7c1750d403f38a6e3c081d4e1b7e22588f374d2a23378c7`
+- **DAO Deployment TX:** `130b5dd7521791ef049428c526206395dc397222b7a624a39061624f08d4d2f7`
+
+### Screenshots (Placeholders)
+*(Please upload your screenshots to the `assets/` folder and replace the paths below)*
+- **Mobile Responsive UI:** ![Mobile UI](assets/mobile_ui.png)
+- **CI/CD Pipeline Running:** ![CI/CD](assets/cicd_pipeline.png)
+- **Tests Passing:** ![Tests](assets/tests_passing.png)
+
+---<hr/>
 
 MediProof is a zero-knowledge clinical data infrastructure layer built on the Stellar Soroban smart contract network. It empowers healthcare institutions, researchers, and patients to anchor cryptographic proofs of electronic health records (EHR), clinical trials, and medical evidence on-chain **without exposing any Protected Health Information (PHI)**.
 
