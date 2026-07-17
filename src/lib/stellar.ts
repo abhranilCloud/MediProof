@@ -1,4 +1,14 @@
-import * as StellarSdk from '@stellar/stellar-sdk';
+import { 
+  Horizon, 
+  rpc, 
+  TransactionBuilder, 
+  BASE_FEE, 
+  Operation, 
+  Asset, 
+  Contract, 
+  xdr, 
+  scValToNative 
+} from '@stellar/stellar-sdk';
 import {
   FREIGHTER_ID,
   StellarWalletsKit,
@@ -8,13 +18,13 @@ import {
 import { STELLAR_RPC_URL, HORIZON_URL, NETWORK_PASSPHRASE, EXPLORER_BASE_URL } from './constants';
 
 export class StellarHelper {
-  private server: StellarSdk.Horizon.Server;
-  private rpcServer: StellarSdk.rpc.Server;
+  private server: Horizon.Server;
+  private rpcServer: rpc.Server;
   private kit: StellarWalletsKit | null = null;
 
   constructor() {
-    this.server = new StellarSdk.Horizon.Server(HORIZON_URL);
-    this.rpcServer = new StellarSdk.rpc.Server(STELLAR_RPC_URL);
+    this.server = new Horizon.Server(HORIZON_URL);
+    this.rpcServer = new rpc.Server(STELLAR_RPC_URL);
   }
 
   /* ─── Wallet ─── */
@@ -89,14 +99,14 @@ export class StellarHelper {
   ): Promise<{ hash: string }> {
     try {
       const sourceAccount = await this.server.loadAccount(sender);
-      const tx = new StellarSdk.TransactionBuilder(sourceAccount, {
-        fee: StellarSdk.BASE_FEE,
+      const tx = new TransactionBuilder(sourceAccount, {
+        fee: BASE_FEE,
         networkPassphrase: NETWORK_PASSPHRASE,
       })
         .addOperation(
-          StellarSdk.Operation.payment({
+          Operation.payment({
             destination: recipient,
-            asset: StellarSdk.Asset.native(),
+            asset: Asset.native(),
             amount: amount,
           }),
         )
@@ -107,7 +117,7 @@ export class StellarHelper {
         networkPassphrase: NETWORK_PASSPHRASE,
       });
 
-      const signed = StellarSdk.TransactionBuilder.fromXDR(signedTxXdr, NETWORK_PASSPHRASE);
+      const signed = TransactionBuilder.fromXDR(signedTxXdr, NETWORK_PASSPHRASE);
       const submitResult = await this.server.submitTransaction(signed);
       return { hash: submitResult.hash };
     } catch (error: unknown) {
@@ -131,14 +141,14 @@ export class StellarHelper {
     publicKey: string;
     contractId: string;
     method: string;
-    args?: StellarSdk.xdr.ScVal[];
+    args?: xdr.ScVal[];
   }): Promise<{ hash: string }> {
     const sourceAccount = await this.server.loadAccount(params.publicKey);
-    const contract = new StellarSdk.Contract(params.contractId);
+    const contract = new Contract(params.contractId);
     const args = params.args || [];
 
-    const tx = new StellarSdk.TransactionBuilder(sourceAccount, {
-      fee: StellarSdk.BASE_FEE,
+    const tx = new TransactionBuilder(sourceAccount, {
+      fee: BASE_FEE,
       networkPassphrase: NETWORK_PASSPHRASE,
     })
       .addOperation(contract.call(params.method, ...args))
@@ -147,7 +157,7 @@ export class StellarHelper {
 
     const simulation = await this.rpcServer.simulateTransaction(tx);
 
-    if (StellarSdk.rpc.Api.isSimulationError(simulation)) {
+    if (rpc.Api.isSimulationError(simulation)) {
       const errMsg = simulation.error || 'Simulation failed';
       if (
         errMsg.toLowerCase().includes('balance') ||
@@ -158,13 +168,13 @@ export class StellarHelper {
       throw new Error(`Contract simulation failed: ${errMsg}`);
     }
 
-    const preparedTx = StellarSdk.rpc.assembleTransaction(tx, simulation).build();
+    const preparedTx = rpc.assembleTransaction(tx, simulation).build();
 
     const { signedTxXdr } = await this.getKit().signTransaction(preparedTx.toXDR(), {
       networkPassphrase: NETWORK_PASSPHRASE,
     });
 
-    const signed = StellarSdk.TransactionBuilder.fromXDR(signedTxXdr, NETWORK_PASSPHRASE);
+    const signed = TransactionBuilder.fromXDR(signedTxXdr, NETWORK_PASSPHRASE);
     const sendResponse = await this.rpcServer.sendTransaction(signed);
 
     if (sendResponse.status === 'ERROR') {
@@ -178,14 +188,14 @@ export class StellarHelper {
     publicKey: string;
     contractId: string;
     method: string;
-    args?: StellarSdk.xdr.ScVal[];
-  }): Promise<StellarSdk.xdr.ScVal | null> {
+    args?: xdr.ScVal[];
+  }): Promise<xdr.ScVal | null> {
     const sourceAccount = await this.server.loadAccount(params.publicKey);
-    const contract = new StellarSdk.Contract(params.contractId);
+    const contract = new Contract(params.contractId);
     const args = params.args || [];
 
-    const tx = new StellarSdk.TransactionBuilder(sourceAccount, {
-      fee: StellarSdk.BASE_FEE,
+    const tx = new TransactionBuilder(sourceAccount, {
+      fee: BASE_FEE,
       networkPassphrase: NETWORK_PASSPHRASE,
     })
       .addOperation(contract.call(params.method, ...args))
@@ -194,7 +204,7 @@ export class StellarHelper {
 
     const simulation = await this.rpcServer.simulateTransaction(tx);
 
-    if (StellarSdk.rpc.Api.isSimulationError(simulation)) {
+    if (rpc.Api.isSimulationError(simulation)) {
       throw new Error(`Read failed: ${simulation.error}`);
     }
 
@@ -210,16 +220,16 @@ export class StellarHelper {
       const response = await this.rpcServer.getTransaction(hash);
       console.log('getTransaction response status:', response.status);
 
-      if (response.status === StellarSdk.rpc.Api.GetTransactionStatus.NOT_FOUND) {
+      if (response.status === rpc.Api.GetTransactionStatus.NOT_FOUND) {
         return { status: 'PENDING' };
       }
-      if (response.status === StellarSdk.rpc.Api.GetTransactionStatus.FAILED) {
+      if (response.status === rpc.Api.GetTransactionStatus.FAILED) {
         return { status: 'FAILED' };
       }
       return {
         status: 'SUCCESS',
         returnValue: response.returnValue
-          ? String(StellarSdk.scValToNative(response.returnValue))
+          ? String(scValToNative(response.returnValue))
           : undefined,
       };
     } catch (err) {
@@ -242,8 +252,8 @@ export class StellarHelper {
       return response.events.map((event) => ({
         id: event.id,
         type: event.type,
-        topic: event.topic.map((t) => String(StellarSdk.scValToNative(t))),
-        value: StellarSdk.scValToNative(event.value),
+        topic: event.topic.map((t) => String(scValToNative(t))),
+        value: scValToNative(event.value),
         ledger: event.ledger,
         txHash: event.txHash,
         createdAt: event.ledgerClosedAt,

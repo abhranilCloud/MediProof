@@ -6,7 +6,7 @@ import DropZone from '@/components/ui/DropZone';
 import { useWallet } from '@/hooks/useWallet';
 import { stellar } from '@/lib/stellar';
 import { MED_RECORD_CONTRACT_ID } from '@/lib/constants';
-import * as StellarSdk from '@stellar/stellar-sdk';
+import { Contract, xdr, scValToNative, nativeToScVal } from '@stellar/stellar-sdk';
 import {
   HiOutlineMagnifyingGlass,
   HiOutlineArrowPath,
@@ -48,7 +48,7 @@ export default function VerifyPage() {
         hashBytes[i] = parseInt(hashToCheck.substring(i * 2, i * 2 + 2), 16);
       }
 
-      const args = [StellarSdk.xdr.ScVal.scvBytes(Buffer.from(hashBytes))];
+      const args = [xdr.ScVal.scvBytes(Buffer.from(hashBytes))];
 
       const isRegVal = await stellar.simulateRead({
         publicKey,
@@ -57,7 +57,7 @@ export default function VerifyPage() {
         args,
       });
 
-      const registered = isRegVal ? StellarSdk.scValToNative(isRegVal) : false;
+      const registered = isRegVal ? scValToNative(isRegVal) : false;
 
       if (registered) {
         const retval = await stellar.simulateRead({
@@ -68,7 +68,7 @@ export default function VerifyPage() {
         });
 
         if (retval) {
-          const native = StellarSdk.scValToNative(retval);
+          const native = scValToNative(retval);
           if (native && typeof native === 'object') {
             setResult({
               found: true,

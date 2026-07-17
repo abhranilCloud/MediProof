@@ -6,7 +6,7 @@ import DropZone from '@/components/ui/DropZone';
 import { useWallet } from '@/hooks/useWallet';
 import { stellar } from '@/lib/stellar';
 import { CONSORTIUM_CONTRACT_ID } from '@/lib/constants';
-import * as StellarSdk from '@stellar/stellar-sdk';
+import { Contract, xdr, scValToNative, nativeToScVal } from '@stellar/stellar-sdk';
 import toast from 'react-hot-toast';
 import {
   HiOutlinePlusCircle,
@@ -79,17 +79,17 @@ export default function SplitPage() {
       }
 
       const creatorAddresses = investigators.map((c) =>
-        StellarSdk.nativeToScVal(c.address, { type: 'address' }),
+        nativeToScVal(c.address, { type: 'address' }),
       );
       const creatorShares = investigators.map((c) =>
-        StellarSdk.nativeToScVal(c.share, { type: 'u32' }),
+        nativeToScVal(c.share, { type: 'u32' }),
       );
 
       const args = [
-        StellarSdk.xdr.ScVal.scvVec(creatorAddresses),
-        StellarSdk.xdr.ScVal.scvVec(creatorShares),
-        StellarSdk.xdr.ScVal.scvBytes(Buffer.from(hashBytes)),
-        StellarSdk.nativeToScVal(title, { type: 'string' }),
+        xdr.ScVal.scvVec(creatorAddresses),
+        xdr.ScVal.scvVec(creatorShares),
+        xdr.ScVal.scvBytes(Buffer.from(hashBytes)),
+        nativeToScVal(title, { type: 'string' }),
       ];
 
       const { hash } = await stellar.buildAndSignTx({

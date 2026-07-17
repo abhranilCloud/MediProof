@@ -6,7 +6,7 @@ import DropZone from '@/components/ui/DropZone';
 import { useWallet } from '@/hooks/useWallet';
 import { stellar } from '@/lib/stellar';
 import { MED_RECORD_CONTRACT_ID } from '@/lib/constants';
-import * as StellarSdk from '@stellar/stellar-sdk';
+import { Contract, xdr, scValToNative, nativeToScVal } from '@stellar/stellar-sdk';
 import toast from 'react-hot-toast';
 import { HiOutlineArrowPath, HiOutlineFingerPrint, HiArrowTopRightOnSquare } from 'react-icons/hi2';
 
@@ -54,18 +54,18 @@ export default function RegisterPage() {
         publicKey,
         contractId: MED_RECORD_CONTRACT_ID,
         method: 'is_registered',
-        args: [StellarSdk.xdr.ScVal.scvBytes(Buffer.from(hashBytes))],
+        args: [xdr.ScVal.scvBytes(Buffer.from(hashBytes))],
       });
-      const registered = isRegVal ? StellarSdk.scValToNative(isRegVal) : false;
+      const registered = isRegVal ? scValToNative(isRegVal) : false;
       if (registered) {
         throw new Error('This document has already been registered on-chain.');
       }
 
       const args = [
-        StellarSdk.nativeToScVal(publicKey, { type: 'address' }),
-        StellarSdk.xdr.ScVal.scvBytes(Buffer.from(hashBytes)),
-        StellarSdk.nativeToScVal(title, { type: 'string' }),
-        StellarSdk.nativeToScVal(recordType, { type: 'string' }),
+        nativeToScVal(publicKey, { type: 'address' }),
+        xdr.ScVal.scvBytes(Buffer.from(hashBytes)),
+        nativeToScVal(title, { type: 'string' }),
+        nativeToScVal(recordType, { type: 'string' }),
       ];
 
       const { hash } = await stellar.buildAndSignTx({

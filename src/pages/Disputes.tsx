@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useWallet } from '@/hooks/useWallet';
 import { stellar } from '@/lib/stellar';
 import { DATA_ACCESS_CONTRACT_ID } from '@/lib/constants';
-import * as StellarSdk from '@stellar/stellar-sdk';
+import { Contract, xdr, scValToNative, nativeToScVal } from '@stellar/stellar-sdk';
 import toast from 'react-hot-toast';
 import {
   HiOutlineScale,
@@ -64,7 +64,7 @@ export default function DisputesPage() {
         method: 'get_dispute_count',
       });
 
-      const count = countVal ? Number(StellarSdk.scValToNative(countVal)) : 0;
+      const count = countVal ? Number(scValToNative(countVal)) : 0;
       const items: Dispute[] = [];
 
       for (let i = 1; i <= count; i++) {
@@ -73,10 +73,10 @@ export default function DisputesPage() {
             publicKey,
             contractId: DATA_ACCESS_CONTRACT_ID,
             method: 'get_dispute',
-            args: [StellarSdk.nativeToScVal(i, { type: 'u32' })],
+            args: [nativeToScVal(i, { type: 'u32' })],
           });
           if (val) {
-            const d = StellarSdk.scValToNative(val);
+            const d = scValToNative(val);
             items.push({
               id: Number(d.id || i),
               plaintiff: String(d.plaintiff || ''),
@@ -119,10 +119,10 @@ export default function DisputesPage() {
       }
 
       const args = [
-        StellarSdk.nativeToScVal(publicKey, { type: 'address' }),
-        StellarSdk.nativeToScVal(defendant, { type: 'address' }),
-        StellarSdk.nativeToScVal(Number(disputeWorkId), { type: 'u32' }),
-        StellarSdk.xdr.ScVal.scvBytes(Buffer.from(hashBytes)),
+        nativeToScVal(publicKey, { type: 'address' }),
+        nativeToScVal(defendant, { type: 'address' }),
+        nativeToScVal(Number(disputeWorkId), { type: 'u32' }),
+        xdr.ScVal.scvBytes(Buffer.from(hashBytes)),
       ];
 
       const { hash } = await stellar.buildAndSignTx({
@@ -162,10 +162,10 @@ export default function DisputesPage() {
       setVoting(true);
 
       const args = [
-        StellarSdk.nativeToScVal(publicKey, { type: 'address' }),
-        StellarSdk.nativeToScVal(Number(voteDisputeId), { type: 'u32' }),
-        StellarSdk.nativeToScVal(BigInt(voteCount), { type: 'i128' }),
-        StellarSdk.nativeToScVal(supportPlaintiff),
+        nativeToScVal(publicKey, { type: 'address' }),
+        nativeToScVal(Number(voteDisputeId), { type: 'u32' }),
+        nativeToScVal(BigInt(voteCount), { type: 'i128' }),
+        nativeToScVal(supportPlaintiff),
       ];
 
       const { hash } = await stellar.buildAndSignTx({

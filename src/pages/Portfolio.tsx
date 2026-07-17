@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useWallet } from '@/hooks/useWallet';
 import { stellar } from '@/lib/stellar';
 import { CONSORTIUM_CONTRACT_ID } from '@/lib/constants';
-import * as StellarSdk from '@stellar/stellar-sdk';
+import { Contract, xdr, scValToNative, nativeToScVal } from '@stellar/stellar-sdk';
 import toast from 'react-hot-toast';
 import {
   HiOutlineDocumentText,
@@ -45,7 +45,7 @@ export default function PortfolioPage() {
         method: 'get_work_count',
       });
 
-      const count = countVal ? Number(StellarSdk.scValToNative(countVal)) : 0;
+      const count = countVal ? Number(scValToNative(countVal)) : 0;
       const owned: OwnedWork[] = [];
 
       for (let i = 1; i <= count; i++) {
@@ -55,23 +55,23 @@ export default function PortfolioPage() {
             contractId: CONSORTIUM_CONTRACT_ID,
             method: 'get_share',
             args: [
-              StellarSdk.nativeToScVal(i, { type: 'u32' }),
-              StellarSdk.nativeToScVal(publicKey, { type: 'address' }),
+              nativeToScVal(i, { type: 'u32' }),
+              nativeToScVal(publicKey, { type: 'address' }),
             ],
           });
 
           if (shareVal) {
-            const share = Number(StellarSdk.scValToNative(shareVal));
+            const share = Number(scValToNative(shareVal));
             if (share > 0) {
               const workVal = await stellar.simulateRead({
                 publicKey,
                 contractId: CONSORTIUM_CONTRACT_ID,
                 method: 'get_work',
-                args: [StellarSdk.nativeToScVal(i, { type: 'u32' })],
+                args: [nativeToScVal(i, { type: 'u32' })],
               });
 
               if (workVal) {
-                const work = StellarSdk.scValToNative(workVal);
+                const work = scValToNative(workVal);
                 owned.push({
                   id: String(work.id || i),
                   title: String(work.title || `Work #${i}`),
@@ -107,10 +107,10 @@ export default function PortfolioPage() {
     setTransferring(true);
     try {
       const args = [
-        StellarSdk.nativeToScVal(Number(transferModal.workId), { type: 'u32' }),
-        StellarSdk.nativeToScVal(publicKey, { type: 'address' }),
-        StellarSdk.nativeToScVal(transferTo, { type: 'address' }),
-        StellarSdk.nativeToScVal(Number(transferAmount), { type: 'u32' }),
+        nativeToScVal(Number(transferModal.workId), { type: 'u32' }),
+        nativeToScVal(publicKey, { type: 'address' }),
+        nativeToScVal(transferTo, { type: 'address' }),
+        nativeToScVal(Number(transferAmount), { type: 'u32' }),
       ];
 
       const { hash } = await stellar.buildAndSignTx({

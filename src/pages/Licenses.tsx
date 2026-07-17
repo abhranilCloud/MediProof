@@ -5,7 +5,7 @@ import { useState, useCallback } from 'react';
 import { useWallet } from '@/hooks/useWallet';
 import { stellar } from '@/lib/stellar';
 import { DATA_ACCESS_CONTRACT_ID } from '@/lib/constants';
-import * as StellarSdk from '@stellar/stellar-sdk';
+import { Contract, xdr, scValToNative, nativeToScVal } from '@stellar/stellar-sdk';
 import toast from 'react-hot-toast';
 import {
   HiOutlineArrowPath,
@@ -50,10 +50,10 @@ export default function LicensesPage() {
       }
 
       const args = [
-        StellarSdk.nativeToScVal(publicKey, { type: 'address' }),
-        StellarSdk.nativeToScVal(Number(workId), { type: 'u32' }),
-        StellarSdk.nativeToScVal(accessType, { type: 'u32' }),
-        StellarSdk.xdr.ScVal.scvBytes(Buffer.from(hashBytes)),
+        nativeToScVal(publicKey, { type: 'address' }),
+        nativeToScVal(Number(workId), { type: 'u32' }),
+        nativeToScVal(accessType, { type: 'u32' }),
+        xdr.ScVal.scvBytes(Buffer.from(hashBytes)),
       ];
 
       const { hash } = await stellar.buildAndSignTx({
@@ -90,9 +90,9 @@ export default function LicensesPage() {
     try {
       setGranting(true);
       const args = [
-        StellarSdk.nativeToScVal(Number(grantLicenseId), { type: 'u32' }),
-        StellarSdk.nativeToScVal(publicKey, { type: 'address' }),
-        StellarSdk.nativeToScVal(grantAddress, { type: 'address' }),
+        nativeToScVal(Number(grantLicenseId), { type: 'u32' }),
+        nativeToScVal(publicKey, { type: 'address' }),
+        nativeToScVal(grantAddress, { type: 'address' }),
       ];
 
       const { hash } = await stellar.buildAndSignTx({
