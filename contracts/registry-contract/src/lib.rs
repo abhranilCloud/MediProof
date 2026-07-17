@@ -1,5 +1,5 @@
 #![no_std]
-use soroban_sdk::{contract, contractimpl, contracttype, symbol_short, Address, BytesN, Env, String, Vec};
+use soroban_sdk::{contract, contractimpl, contracttype, symbol_short, Address, BytesN, Env, String};
 
 /// A single registered medical record — stores the registrant, document hash,
 /// title, record type (e.g. "Lab Report", "MRI Scan"), and ledger timestamp.

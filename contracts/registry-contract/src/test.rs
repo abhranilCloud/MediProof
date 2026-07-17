@@ -8,8 +8,8 @@ fn test_register_and_verify() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register(RegistryContract, ());
-    let client = RegistryContractClient::new(&env, &contract_id);
+    let contract_id = env.register(MedRecordContract, ());
+    let client = MedRecordContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     client.initialize(&admin);
@@ -38,8 +38,8 @@ fn test_get_record_by_id() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register(RegistryContract, ());
-    let client = RegistryContractClient::new(&env, &contract_id);
+    let contract_id = env.register(MedRecordContract, ());
+    let client = MedRecordContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     client.initialize(&admin);
@@ -57,13 +57,13 @@ fn test_get_record_by_id() {
 }
 
 #[test]
-#[should_panic(expected = "This file hash has already been registered")]
+#[should_panic(expected = "This document hash has already been registered in MediProof")]
 fn test_duplicate_hash_rejected() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register(RegistryContract, ());
-    let client = RegistryContractClient::new(&env, &contract_id);
+    let contract_id = env.register(MedRecordContract, ());
+    let client = MedRecordContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     client.initialize(&admin);
@@ -79,13 +79,13 @@ fn test_duplicate_hash_rejected() {
 }
 
 #[test]
-#[should_panic(expected = "File hash not found in registry")]
+#[should_panic(expected = "Document hash not found in MediProof registry")]
 fn test_verify_unregistered_hash() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register(RegistryContract, ());
-    let client = RegistryContractClient::new(&env, &contract_id);
+    let contract_id = env.register(MedRecordContract, ());
+    let client = MedRecordContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     client.initialize(&admin);
@@ -100,8 +100,8 @@ fn test_is_registered() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register(RegistryContract, ());
-    let client = RegistryContractClient::new(&env, &contract_id);
+    let contract_id = env.register(MedRecordContract, ());
+    let client = MedRecordContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     client.initialize(&admin);
