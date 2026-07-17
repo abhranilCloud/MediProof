@@ -1,5 +1,5 @@
 #![no_std]
-use soroban_sdk::{contract, contractimpl, contracttype, symbol_short, token, Address, BytesN, Env, String};
+use soroban_sdk::{contract, contractimpl, contracttype, symbol_short, token, Address, BytesN, Env, IntoVal};
 
 /// Data access agreement — defines access terms for a registered medical record.
 /// Access types: 0 = OpenAccess, 1 = RestrictedResearch, 2 = Commercial, 3 = Custom
