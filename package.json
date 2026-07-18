@@ -1,6 +1,6 @@
 {
   "name": "mediproof-soroban",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "description": "Decentralized Medical Records & Clinical Evidence Registry on Stellar Soroban",
   "type": "module",
