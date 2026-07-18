@@ -19,8 +19,8 @@
 
 - **Public GitHub repository:** Yes (37+ commits).
 - **Live deployed application:** [Live Demo](https://mediproof.netlify.app/)
-- **PPT/Pitch deck link:** [Pitch Deck](https://pitch.com) *(Add link here)*
-- **Demo video link:** [Watch Video](https://youtube.com) *(Add link here)*
+- **PPT/Pitch deck link:** [View Pitch Deck](https://drive.google.com/file/d/1AzmcdJtGHG4zQRQFOG0h_rYxKqMcGasp/view?usp=sharing)
+- **Demo video link:** [Watch Walkthrough](https://drive.google.com/file/d/1jkVABDEwtNO--hJYw3BgsqtQ80_FmzlD/view?usp=sharing) *(Update with Level 5 video if recorded)*
 - **Proof of 50+ users:** See [Responses Spreadsheet](https://docs.google.com/spreadsheets/d/1k33EYJPSTFaI9LCi9v7lbUUNCTenTaDwNwTprscfghY/edit?usp=sharing)
 - **Screenshots of analytics or transaction activity:** See [Analytics Dashboard](#product-analytics) below.
 - **User feedback iteration summary:** See below section.
