@@ -46,7 +46,7 @@
 - **Desktop UI 2:** ![UI 2](./assets/ui2.png)
 - **Desktop UI 3:** ![UI 3](./assets/ui3.png)
 - **CI/CD Pipeline Running:** ![CI/CD](./assets/cicd.png)
-- **Product Analytics Dashboard:** (To be added via Vercel)
+- **Product Analytics Dashboard:** ![Analytics](./assets/analytics.png)
 
 ---<hr/>
 
