@@ -4,8 +4,9 @@ import {
   HiOutlineShieldCheck,
   HiOutlineDocumentText,
   HiOutlineCurrencyDollar,
+  HiOutlineChartBar,
 } from 'react-icons/hi2';
-import { RiGroupLine, RiActivityLine } from 'react-icons/ri';
+import { RiGroupLine } from 'react-icons/ri';
 import { useWallet } from '@/hooks/useWallet';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { format, subDays } from 'date-fns';
@@ -117,7 +118,7 @@ export default function Home() {
           {/* Chart */}
           <div className="lg:col-span-2 rounded-none border border-[rgb(var(--hairline))] bg-[rgb(var(--surface))] p-6">
              <div className="flex items-center gap-2 mb-6">
-                <RiActivityLine className="text-[rgb(var(--brand))] h-5 w-5" />
+                <HiOutlineChartBar className="text-[rgb(var(--brand))] h-5 w-5" />
                 <h3 className="text-lg font-semibold text-[rgb(var(--ink))]">Network Activity</h3>
              </div>
              <div className="h-[250px] w-full">
