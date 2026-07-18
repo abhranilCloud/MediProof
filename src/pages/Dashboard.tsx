@@ -136,7 +136,7 @@ export default function Home() {
                      contentStyle={{ backgroundColor: 'rgb(var(--elevated))', borderColor: 'rgb(var(--hairline))', borderRadius: '0px' }}
                      itemStyle={{ color: 'rgb(var(--ink))' }}
                      labelStyle={{ color: 'rgb(var(--ink-muted))' }}
-                     formatter={(value: number) => [`${value} Proofs`, 'Anchored']}
+                     formatter={(value: any) => [`${value} Proofs`, 'Anchored']}
                    />
                    <Area type="monotone" dataKey="proofs" stroke="rgb(var(--brand))" fillOpacity={1} fill="url(#colorProofs)" strokeWidth={2} />
                  </AreaChart>
