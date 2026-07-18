@@ -396,6 +396,7 @@ chmod +x scripts/deploy.sh
 - Third-party security audit
 - Mainnet deployment
 - Fee Sponsorship for gasless onboarding of healthcare institutions
+- Cross-Chain Interoperability via Stellar asset bridges
 
 ---
 
