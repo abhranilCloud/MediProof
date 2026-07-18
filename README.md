@@ -26,7 +26,7 @@
   - `License DAO`: `CCFAGSHGYWELQKX4OU4TLXIY3XOSNMKN4C25AVKFQCF2QELYTIL2MMVV`
 - **Analytics & Monitoring Setup:** Integrated `@vercel/analytics` directly into `src/main.tsx` for product monitoring.
 - **Proof of 10+ User Wallet Interactions:** See [`assets/wallet_interactions.csv`](./assets/wallet_interactions.csv) for real testnet transaction logs.
-- **Basic User Feedback Summary:** Genuine user feedback collected via [Google Form](https://forms.google.com) (responses pending based on latest MVP usage).
+- **Basic User Feedback Summary:** Genuine user feedback collected via [Google Form](https://forms.gle/Gmg8MYuSDhpkuUSW9) (see [Responses Spreadsheet](https://docs.google.com/spreadsheets/d/1k33EYJPSTFaI9LCi9v7lbUUNCTenTaDwNwTprscfghY/edit?usp=sharing)).
 - **Mobile Responsive Design:** See screenshots below.
 
 ---
